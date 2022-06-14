@@ -146,7 +146,7 @@
       this.form.username = 'admin'
       this.form.password = '123456'
       setTimeout(() => {
-        this.handleLogin()
+        // this.handleLogin()
       }, 3000)
     },
     methods: {

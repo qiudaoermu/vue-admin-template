@@ -206,7 +206,7 @@
 
 <script>
   export default {
-    name: 'Element',
+    name: 'Elements',
     components: {},
     data() {
       return {

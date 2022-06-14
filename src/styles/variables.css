@@ -1,0 +1,11 @@
+@charset "UTF-8";
+/**
+ * @author https://gitee.com/chu1204505056/aio-sys （不想保留author可删除）
+ * @description 全局主题变量配置
+ */
+/* stylelint-disable */
+:export {
+  menu-color: rgba(255, 255, 255, 0.95);
+  menu-color-active: rgba(255, 255, 255, 0.95);
+  menu-background: #282c34;
+}

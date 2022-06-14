@@ -6,13 +6,10 @@
           <div
             style="display: flex; align-items: center; justify-content: center"
           >
-            <a
-              target="_blank"
-              href="https://github.com/chuzhixin/vue-admin-better"
-            >
+            <a target="_blank" href="https://github.com/chuzhixin/aio-sys">
               <img
                 style="margin-right: 10px"
-                src="https://img.shields.io/github/stars/chuzhixin/vue-admin-better?style=flat-square&label=Stars&logo=github"
+                src="https://img.shields.io/github/stars/chuzhixin/aio-sys?style=flat-square&label=Stars&logo=github"
               />
             </a>
             <p v-html="noticeList[0].title"></p>
@@ -102,16 +99,10 @@
                 <el-button type="primary">QQ讨论群、基础版、文档</el-button>
               </a>
             </el-popover>
-            <a
-              target="_blank"
-              href="https://github.com/chuzhixin/vue-admin-better"
-            >
+            <a target="_blank" href="https://github.com/chuzhixin/aio-sys">
               <el-button type="warning">github下载源码点star</el-button>
             </a>
-            <a
-              target="_blank"
-              href="https://gitee.com/chu1204505056/vue-admin-better"
-            >
+            <a target="_blank" href="https://gitee.com/chu1204505056/aio-sys">
               <el-button type="warning">码云下载源码点star</el-button>
             </a>
             <a @click="handleChangeTheme">
@@ -171,7 +162,7 @@
           </div>
           <div style="text-align: center">
             <vab-colorful-icon style="font-size: 140px" icon-class="vab" />
-            <h1 style="font-size: 30px">vue-admin-better</h1>
+            <h1 style="font-size: 30px">aio-sys</h1>
           </div>
           <div v-for="(item, index) in noticeList" :key="index">
             <el-alert
@@ -362,7 +353,7 @@
               },
               data: [
                 {
-                  name: 'vue-admin-better',
+                  name: 'aio-sys',
                   value: 15000,
                 },
                 {
@@ -486,7 +477,7 @@
           {
             icon: 'laptop-code',
             title: '源码',
-            link: 'https://github.com/chuzhixin/vue-admin-better',
+            link: 'https://github.com/chuzhixin/aio-sys',
             color: '#b37feb',
           },
           {

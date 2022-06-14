@@ -1,12 +1,12 @@
 /**
- * @author https://gitee.com/chu1204505056/vue-admin-better （不想保留author可删除）
+ * @author https://gitee.com/chu1204505056/aio-sys （不想保留author可删除）
  * @description .eslintrc.js
  */
 
 module.exports = {
-  root: true,
+  root: false,
   env: {
-    node: true,
+    node: false,
   },
   extends: ['plugin:vue/recommended', '@vue/prettier'],
   rules: {
