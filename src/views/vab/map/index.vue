@@ -8,7 +8,7 @@
   import axios from 'axios'
   import * as mapv from 'mapv'
   export default {
-    name: 'Map',
+    name: 'Maps',
     components: {},
     data() {
       return {}

@@ -23,7 +23,7 @@ const setting = {
   //这一项非常重要！请务必保留MIT协议下package.json及copyright作者信息 即可免费商用，不遵守此项约定你将无法使用该框架，如需自定义版权信息请联系QQ1204505056
   copyright: 'vab',
   //是否显示页面底部自定义版权信息
-  footerCopyright: true,
+  footerCopyright: false,
   //是否显示顶部进度条
   progressBar: true,
   //缓存路由的最大数量
@@ -41,7 +41,7 @@ const setting = {
   //token存储位置localStorage sessionStorage
   storage: 'localStorage',
   //token失效回退到登录页时是否记录本次的路由
-  recordRoute: true,
+  recordRoute: false,
   //是否显示logo，不显示时设置false，显示时请填写remixIcon图标名称，暂时只支持设置remixIcon
   logo: 'vuejs-fill',
   //是否显示在页面高亮错误
@@ -65,6 +65,6 @@ const setting = {
   //代码生成机生成在view下的文件夹名称
   templateFolder: 'project',
   //是否显示终端donation打印
-  donation: true,
+  donation: false,
 }
 module.exports = setting

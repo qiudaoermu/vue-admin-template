@@ -52,7 +52,7 @@
 
 <script>
   export default {
-    name: 'Form',
+    name: 'Forms',
     data() {
       return {
         ruleForm: {

@@ -62,8 +62,10 @@ export const asyncRoutes = [
       {
         path: 'permissions',
         name: 'Permission',
+
         component: () => import('@/views/vab/permissions/index'),
         meta: {
+          icon: 'folder',
           title: '流程配置',
           permissions: ['admin', 'editor'],
         },
@@ -80,7 +82,7 @@ export const asyncRoutes = [
         name: 'UserManagement',
         component: () =>
           import('@/views/personnelManagement/userManagement/index'),
-        meta: { title: '设备管理' },
+        meta: { title: '设备管理', icon: 'file' },
       },
     ],
   },
@@ -97,6 +99,7 @@ export const asyncRoutes = [
         meta: {
           title: '运行状态',
           noKeepAlive: true,
+          icon: 'plane',
         },
         children: null,
       },
