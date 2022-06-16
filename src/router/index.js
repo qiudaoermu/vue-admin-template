@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-Vue.use(Router)
+Vue.use(Router);
 
 /* Layout */
-import Layout from '@/layout'
+import Layout from "@/layout";
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -38,8 +38,8 @@ export const constantRoutes = [
   },
 
   {
-    path: "/external-link/link",
-    component: () => import("@/views/form/index"),
+    path: "/process/link",
+    component: () => import("@/views/process/index"),
     hidden: true,
   },
 
@@ -50,53 +50,52 @@ export const constantRoutes = [
   },
 
   {
-    path: "/example",
+    path: "/",
     component: Layout,
-    redirect: "/example/table",
-    name: "Example",
-    meta: { title: "Example", icon: "el-icon-s-help" },
+    redirect: "/alg",
+    name: "alg",
+    meta: { title: "alg", icon: "el-icon-s-help" },
     children: [
       {
-        path: "table",
-        name: "Table",
-        component: () => import("@/views/table/index"),
+        path: "alg",
+        name: "alg",
+        component: () => import("@/views/alg/index"),
         meta: { title: "算法场景", icon: "table" },
       },
     ],
   },
   {
-    path: "/external-link",
+    path: "/process",
     component: Layout,
     children: [
       {
         path: "link",
-        component: () => import("@/views/form/index"),
+        component: () => import("@/views/process/index"),
         meta: { title: "流程配置", icon: "link" },
       },
     ],
   },
   {
-    path: "/",
     component: Layout,
-    redirect: "/dashboard",
+    path: "/suplies",
     children: [
       {
-        path: "dashboard",
-        name: "Dashboard",
-        component: () => import("@/views/dashboard/index"),
+        path: "suplies",
+        name: "Suplies",
+        component: () => import("@/views/suplies/index"),
         meta: { title: "设备管理", icon: "dashboard" },
       },
     ],
   },
 
   {
-    path: "/form",
+    path: "/station",
     component: Layout,
     children: [
       {
         path: "index",
-        name: "Form",
-        component: () => import("@/views/form/index"),
+        name: "Station",
+        component: () => import("@/views/station/index"),
         meta: { title: "运行状态", icon: "form" },
       },
     ],
@@ -106,18 +105,19 @@ export const constantRoutes = [
   { path: "*", redirect: "/404", hidden: true },
 ];
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes,
+  });
 
-const router = createRouter()
+const router = createRouter();
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher; // reset router
 }
 
-export default router
+export default router;
