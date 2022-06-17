@@ -36,7 +36,7 @@ module.exports = {
       warnings: false,
       errors: true,
     },
-    before: require("./mock/mock-server.js"),
+    // before: require("./mock/mock-server.js"),
   },
   lintOnSave: false,
   configureWebpack: {

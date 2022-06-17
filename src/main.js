@@ -21,6 +21,10 @@ Vue.use(vuePlugin);
 
 import MyPD from "../package/index.js";
 Vue.use(MyPD);
+
+import componets from "@/components";
+Vue.use(componets);
+
 import "../package/theme/index.scss";
 /**
  * If you don't want to use mock-server
