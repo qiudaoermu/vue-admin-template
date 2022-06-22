@@ -7,9 +7,9 @@
           <div class="data-show-left-top-left">
             <header-title title='数据分析'  class="title1"/>
             <header-title title="产品合格率分析" />
-            <v-chart class="chart-top chart" :option="option" />
+            <v-chart class="chart-top chart" :option="optionCheck" />
             <header-title title="错误位置统计" />
-            <v-chart class="chart-bottom chart" :option="option" />
+            <v-chart class="chart-bottom chart" :option="optionError" />
           </div>
           <div class="data-show-left-top-middle">
             <div class="data-show-left-top-middle-summary">
@@ -20,74 +20,69 @@
             </div>
             <div class="data-show-left-top-image">
               <header-title title="当前检测位置" />
-              <img />
+              <img :src="display" />
             </div>
           </div>
           <div class="data-show-left-top-right">
             <div class="data-show-left-top-right-top">
               <div class="data-show-right-top-action">
                 <el-form :inline="true" :model="numberValidateForm" ref="numberValidateForm"  class="demo-ruleForm">
-                  <el-form-item
-                    label="运动超时"
-                  >
-                     <el-input-number v-model="numberValidateForm.time" controls-position="right" @change="handleChange" :min="1" :max="10" size="small"/>
-                  </el-form-item>
                   <el-form-item>
-                    <el-button type="primary" size="small" @click="resetForm('numberValidateForm')">重置</el-button>
+                     <el-button type="primary" v-if="ws" size="small" @click="stopHandle()">
+                      停止
+                    </el-button>
+                    <el-button type="primary" v-else size="small" @click="startHandle()">
+                      开始
+                    </el-button>
+                   
                   </el-form-item>
                 </el-form>
                 <div class="data-show-right-top-result">
-                    <p>检测结果：</p>
-                    <h3>成功</h3>
+                  <p>检测结果：</p>
+                  <h3>{{result}}</h3>
                 </div>
               </div>
               <div class="data-show-right-top-list">
                 <header-title title="检测项" />
-                  <el-table
-                    size='mini'
-                    :data="tableData"
-                    style="width: 100%"
-                    :row-class-name="tableRowClassName">
-                    <el-table-column
-                      prop="date"
-                      label="日期"
-                      width="180">
-                    </el-table-column>
-                    <el-table-column
-                      prop="name"
-                      label="姓名"
-                      width="180">
-                    </el-table-column>
-                    <el-table-column
-                      prop="address"
-                      label="地址">
-                      <template slot-scope="scope">
-                      <el-button
-                        v-if="scope.row.name==='王大虎'"
-                        @click.native.prevent="deleteRow(scope.$index, tableData)"
-                        type="text"
-                        size="small">
-                        移除
-                      </el-button>
-                    </template>
-                    </el-table-column>
-                  </el-table>
+                <el-table
+                  size='mini'
+                  :data="tableData"
+                  style="width: 100%"
+                  :row-class-name="tableRowClassName">
+                  <el-table-column
+                    prop="name"
+                    label="检测项"
+                    width="180"
+                  />
+                  <el-table-column
+                    prop="state"
+                    label="检测状态"
+                    width="180"
+                  />
+                  <el-table-column
+                    prop="detectInfo"
+                    label="结果">
+                    <template slot-scope="scope" v-if='scope.row.detectInfo'>
+                      <img :src="right" v-if="scope.row.result" />
+                      <img :src="error"  v-else/>
+                  </template>
+                  </el-table-column>
+                </el-table>
               </div>
             </div>
           </div>
         </div>
         <div class="data-show-left-bottom">
-        
           <div class="data-show-left-bottom-left">
-              <header-title title="报警信息" />
-              <ul class="data-show-left-bottom-left-blog">
-                <li v-for="item in logs">
-                  <img :src="admin"/>
-                  <p>
-                   {{item.log}}
-                  </p>
-                </li>
-              </ul>
+            <header-title title="报警信息" />
+            <ul class="data-show-left-bottom-left-blog">
+              <li v-for="item in logs">
+                <img :src="admin" />
+                <p>
+                  {{ item.log }}
+                </p>
+              </li>
+            </ul>
           </div>
           <div class="data-show-left-bottom-right">
             <header-title title="设备状态" />
@@ -95,22 +90,31 @@
               <div class="content-wrapper">
                 <ul class="list">
                   <li>
-                    <span class="key">物流单号</span>
-                    <span class="value bold-size">data.logisticsOrderCode</span>
+                    <span class="key">机械臂:</span>
+                    <span class="value bold-size">127.0.0.1:57156</span>
                   </li>
                   <li>
-                    <span class="key">收件人</span>
-                    <span class="value bold-size">data.receiverUser</span>
+                    <span class="key">PLC:</span>
+                    <span class="value bold-size">127.0.0.1:502</span>
                   </li>
                   <li>
-                    <span class="key">收件电话</span>
-                    <span class="value bold-size">data.receivePhone</span>
+                    <span class="key">TCP扫码枪：</span>
+                    <span class="value bold-size"></span>
                   </li>
                   <li>
-                    <span class="key">地址</span>
+                    <span class="key">A面相机：</span>
                     <span class="value bold-size">
-                      data.province
                     </span>
+                  </li>
+                </ul>
+                <ul class="list">
+                  <li>
+                    <span class="key">RFID扫码枪：</span>
+                    <span class="value bold-size">127.0.0.1:57156</span>
+                  </li>
+                  <li>
+                    <span class="key">B面相机：</span>
+                    <span class="value bold-size">127.0.0.1:502</span>
                   </li>
                 </ul>
               </div>
@@ -128,15 +132,18 @@ import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { PieChart, BarChart } from "echarts/charts";
 import admin from '@/assets/log.png';
+import right from '@/assets/right.png';
+import error from '@/assets/error.png';
+import display from "@/assets/display.png";
 import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
   GridComponent,
-  xAxis,
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
-
+import Wsocket from "../package/socket.js"
+import { productStatistics,errorPosStatis } from '@/api/state'
 use([
   CanvasRenderer,
   PieChart,
@@ -144,56 +151,72 @@ use([
   TitleComponent,
   TooltipComponent,
   LegendComponent,
-  GridComponent,
+  GridComponent
 ]);
 
 export default {
   name: "TestResultFirst",
   components: {
-    VChart,
+    VChart
   },
   data() {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄',
-      }, {
-        date: '2016-05-04',
-        name: '王大虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄',
-      }, {
-        date: '2016-05-03',
-        name: '王大虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
       admin,
+      right,
+      error,
+      display,
+      detects: { 1: '二维码', 2: '缝隙', 3: '缺陷检测', 4: '模版匹配', 5: '螺丝检测' },
+      tableData: [
+        {
+          name: '二维码',
+          result: '',
+          key: 1,
+          detectInfo: ''
+        },
+        {
+          name: '缝隙',
+          result: '',
+          key: 2,
+          detectInfo: ''
+        },
+        {
+          name: '缺陷检测',
+          result: '',
+          key: 3,
+          detectInfo: ''
+        },
+        {
+          name: '模版匹配',
+          result: '',
+          key: 4,
+          detectInfo: ''
+        },
+        {
+          name: '螺丝检测',
+          result: '',
+          key: 5,
+          detectInfo: ''
+        }
+      ],
       logs: [
-        { log:'2022-0613  15:30:40.537: CPU使用率达到100%！'},
-        { log: '2022-0613  15:30:40.537: 发生异常错误：索引超出了数组界限，文件名D:MachineVisionPlat SHXDLSourceCodelVer0.5 20210818ProjectsMachineVisionPlat.S，行数120'
-      },
-      {log: '2022-0613  15:30:40.537: CPU使用率达到100%！'},
-      {log: '2022-0613  15:30:40.537: CPU使用率达到100%！'},
+        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！' },
+        { log: '2022-0613  15:30:40.537: 发生异常错误：索引超出了数组界限，文件名D:MachineVisionPlat SHXDLSourceCodelVer0.5 20210818ProjectsMachineVisionPlat.S，行数120' },
+        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'},
+        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'}
       ],
       numberValidateForm: {
         time: 0
       },
       summaryList: [
-        { title: "总数", num: 10 },
-        { title: "合格", num: 10 },
-        { title: "不合格", num: 10 },
-        { title: "合格率", num: 10 },
+        { title: "总数", num: 10, key: 'total' },
+        { title: "合格", num: 1, key: 'eligibleNum' },
+        { title: "不合格", num: 9, key: 'uneligibleNum' },
+        { title: "合格率", num: '10%', key: 'eligibleRate' }
       ],
-      title1: "数据分析",
-      title2: "产品合格率分析",
-      option: {
+      optionCheck: {
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: ["合格", "不合格"],
         },
         yAxis: {
           type: "value",
@@ -202,41 +225,102 @@ export default {
           left: "15%",
           top: "5%",
           right: "5%",
-          bottom: "5%",
+          bottom: "20%",
         },
         series: [
           {
             data: [
-              120,
               {
                 value: 200,
                 itemStyle: {
                   color: "#a90000",
-                },
+                }
               },
               150,
-              80,
-              70,
-              110,
-              130,
             ],
             type: "bar",
           },
         ],
       },
-    };
-  },
-  created() {},
-  mounted() {},
-  methods: {
-    tableRowClassName({row, rowIndex}) {
-      if (rowIndex % 2 === 0) {
-        return 'table-row-default';
-      }
-      return 'success-row';
+      optionError: {
+        xAxis: {
+          type: "category",
+          data: ["合格", "不合格"],
+        },
+        yAxis: {
+          type: "value",
+        },
+        grid: {
+          left: "15%",
+          top: "5%",
+          right: "5%",
+          bottom: "20%",
+        },
+        series: [
+          {
+            data: [
+            ],
+            type: "bar"
+          }
+        ]
+      },
+      ws: '',
+      result: ''
     }
   },
-};
+  created() {},
+  mounted() {
+        console.log(process.env,"prod--------------------------------")
+    this.productStatisticsApi()
+    this.errorPosStatisApi()
+  },
+  methods: {
+    productStatisticsApi() {
+      productStatistics().then(res => {
+        if (res.code === 200) {
+          this.summaryList.forEach(item => {
+            item.num = res.data[item.key]
+          })
+          this.optionCheck.series[0].data[0].value = this.summaryList[0].num
+          this.optionCheck.series[0].data[1] = this.summaryList[1].num
+        }
+      })
+    },
+    errorPosStatisApi() {
+      errorPosStatis().then(res => {
+        if (res.code === 200) {
+          res.data.forEach(item => {
+            item.key = this.detects[item.pos]
+          })
+          this.optionError.xAxis.data = res.data.map(item => item.key)
+          this.optionError.series[0].data = res.data.map(item => item.num)
+        }
+      })
+    },
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 === 0) {
+        return 'table-row-default'
+      }
+      return 'success-row'
+    },
+    startHandle() {
+      this.ws = new Wsocket('socket/pushMessage/1')
+  
+      this.ws.onGetMessage().then(res => {
+        res.result.forEach(item => {
+          item.name = this.tableData.find(el => el.key === item.pos).name
+          this.display = 'http://' + process.env.VUE_APP_NGINX_IMG + item.imgUrl.replace('/home','')
+        })
+        this.result = res.eligibleFlag;
+        this.tableData = res.result;
+      })
+    },
+    stopHandle() {
+      window.location.reload()
+    }
+  }
+}
+
 </script>
 <style lang="scss" scoped>
 ul,
@@ -253,7 +337,7 @@ h6 {
 }
 .section-container {
   .title {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 500;
     margin: 16px 0;
     color: #ffffff;
@@ -338,9 +422,8 @@ h6 {
             flex:1;
             margin-top: 8px;
             background: rgba(255, 255, 255, 0.93);
-            image {
-              width: 321px;
-              height: 211px;
+            img {
+              width: 100%;
             }
           }
         }
@@ -357,11 +440,14 @@ h6 {
             display: flex;
             align-items: center;
             width: 60%;
-            margin: 8px auto;
-            padding-bottom: 10px;
+            margin: 20px auto;
+            padding-bottom: 20px;
             justify-content: center;
+            p {
+              font-size: 16px;
+            }
             h3 {
-              font-size: 18px;
+              font-size: 24px;
               font-family: PingFangSC-Medium, PingFang SC;
               color: #14DD9F;
               font-weight: 500;
@@ -386,6 +472,7 @@ h6 {
               font-weight: 400;
               color: #666666;
               align-items: center;
+              padding:4px;
               img {
                 width:18px;
                 height:18px;
@@ -418,9 +505,9 @@ h6 {
               color: #333333;
             }
             .content-wrapper {
-              width: 390px;
               margin: 0px auto;
               border-radius: 10px;
+              display: flex;
               .ticket {
                 font-size: 16px;
                 line-height: 24px;
@@ -456,6 +543,14 @@ h6 {
                 }
               }
             }
+          }
+        }
+      }
+      .data-show-right-top-list {
+        table {
+          img {
+            width:18px;
+            display: block;
           }
         }
       }

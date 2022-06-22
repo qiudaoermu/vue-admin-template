@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">视觉一体机系统</h3>
+        <h3 class="title">工业视觉一体机-X系列</h3>
       </div>
 
       <el-form-item prop="userName">
@@ -79,8 +79,8 @@ export default {
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("The passwd can not be less than 6 digits"));
+      if (value.length < 3) {
+        callback(new Error("The passwd can not be less than 3 digits"));
       } else {
         callback();
       }

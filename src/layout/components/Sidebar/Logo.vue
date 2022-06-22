@@ -7,13 +7,14 @@
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
+import logo from '@/assets/logo.png'
+
 export default {
   name: 'SidebarLogo',
   props: {
@@ -25,7 +26,7 @@ export default {
   data() {
     return {
       title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo
     }
   }
 }
@@ -53,10 +54,11 @@ export default {
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
+    background: #004BAA;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      height: 25px;
+      width: 147px;
       vertical-align: middle;
       margin-right: 12px;
     }

@@ -1,16 +1,19 @@
 <template>
   <div class="main">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-      <el-tab-pane label="家电外观缺陷检测" name="first">
-        <test-result-first />
-      </el-tab-pane>
-      <el-tab-pane label="家电外观缺陷检测" name="second"
-        >家电外观缺陷检测</el-tab-pane
-      >
-      <el-tab-pane label="家电外观缺陷检测" name="fourth"
-        >家电外观缺陷检测</el-tab-pane
-      >
-    </el-tabs>
+    <!-- <div class="tabs-container">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="家电外观缺陷检测" name="first">
+        </el-tab-pane>
+        <el-tab-pane label="家电外观缺陷检测" name="second"
+          >家电外观缺陷检测</el-tab-pane
+        >
+        <el-tab-pane label="家电外观缺陷检测" name="fourth"
+          >家电外观缺陷检测</el-tab-pane
+        >
+      </el-tabs>
+     </div> -->
+          <test-result-first />
+
   </div>
 </template>
 
@@ -28,12 +31,13 @@ export default {
   },
   created() {},
   mounted() {
-    this.websocket();
+    // this.websocket();
   },
   methods: {
+    handleClick() {},
     websocket(teamId, studentId) {
       this.ws = new WebSocket(
-        `ws://${process.env.VUE_APP_SOCKET_URL}/socket/pushMessage/2`
+        `ws://${process.env.VUE_APP_SOCKET_URL}/socket/pushMessage/1`
       )
       this._onSendMessage()
       this._onGetMessage()
@@ -67,7 +71,7 @@ export default {
     },
     _onGetMessage() {
       this.ws.addEventListener("message", (event) => {
-        const result = JSON.parse(event.data);
+        const result = event.data && JSON.parse(event.data);
       })
     }
   }
@@ -80,6 +84,10 @@ export default {
   padding: 8px;
   height: 100%;
   width: 100%;
+  .tabs-container {
+    width: 40%;
+
+  }
 }
  ::v-deep .el-tabs--card>.el-tabs__header .el-tabs__item {
   background:#fff !important;

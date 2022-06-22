@@ -29,7 +29,7 @@ export default {
     color: #333333;
     font-size: 16px;
     padding-left: 12px;
-    border-left: 5px solid #5a2dff;
+    border-left: 5px solid #004BAA;
     box-sizing: border-box;
   }
 }
