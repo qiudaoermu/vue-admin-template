@@ -220,9 +220,9 @@ export default {
         }
       ],
       logs: [
-        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！' },
-        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'},
-        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'}
+        { log: '2022-06-13  15:30:30.537: CPU使用率达到87%！' },
+        { log: '2022-06-13  18:30:10.537: CPU使用率达到70%！'},
+        { log: '2022-06-13  19:30:42.537: CPU使用率达到90%！'}
       ],
       numberValidateForm: {
         time: 0
@@ -250,13 +250,14 @@ export default {
         series: [
           {
             data: [
+              150,
               {
                 value: 200,
                 itemStyle: {
                   color: "#a90000",
                 }
               },
-              150,
+             
             ],
             type: "bar",
           },
@@ -298,31 +299,23 @@ export default {
   },
   mounted() {
         console.log(process.env,"prod--------------------------------")
-    this.productStatisticsApi()
-    this.errorPosStatisApi()
+  
   },
   methods: {
-    productStatisticsApi() {
-      productStatistics().then(res => {
-        if (res.code === 200) {
-          this.summaryList.forEach(item => {
-            item.num = res.data[item.key]
-          })
-          this.optionCheck.series[0].data[0].value = this.summaryList[1].num
-          this.optionCheck.series[0].data[1] = this.summaryList[2].num
-        }
+    productStatisticsApi(res) {
+      this.summaryList.forEach(item => {
+        item.num = res[item.key]
       })
+    
+      this.optionCheck.series[0].data[0] = this.summaryList[1].num
+      this.optionCheck.series[0].data[1].value = this.summaryList[2].num
     },
-    errorPosStatisApi() {
-      errorPosStatis().then(res => {
-        if (res.code === 200) {
-          res.data.forEach(item => {
-            item.key = this.detects[item.pos]
-          })
-          this.optionError.xAxis.data = res.data.map(item => item.key)
-          this.optionError.series[0].data = res.data.map(item => item.num)
-        }
+    errorPosStatisApi(error) {
+      error.forEach(item => {
+        item.key = this.detects[item.pos]
       })
+      this.optionError.xAxis.data = error.map(item => item.key)
+      this.optionError.series[0].data = error.map(item => item.num)
     },
     tableRowClassName({row, rowIndex}) {
       if (rowIndex % 2 === 0) {
@@ -348,6 +341,8 @@ export default {
         this.result = res.eligibleFlag;
         this.tableData = res.result;
         this.sn = firstDetect.sn;
+        this.productStatisticsApi(res.product)
+        this.errorPosStatisApi(res.error)
       });
     },
     stopHandle() {
