@@ -1,23 +1,32 @@
 <template>
   <div class="dashboard-container">
-    <el-dialog title="自定义设备" :visible.sync="dialogFormVisible" width="460px" custom-class="deviceContainer">
+    <el-dialog
+      title="自定义设备"
+      :visible.sync="dialogFormVisible"
+      width="460px"
+      custom-class="deviceContainer"
+    >
       <el-form :model="form">
         <el-form-item label="设备名称:" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="设备类型:" :label-width="formLabelWidth" >
-          <el-select v-model="form.region" placeholder="请选择活动区域" style="width:100%">
+        <el-form-item label="设备类型:" :label-width="formLabelWidth">
+          <el-select
+            v-model="form.region"
+            placeholder="请选择活动区域"
+            style="width: 100%"
+          >
             <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option>
           </el-select>
         </el-form-item>
-         <el-form-item label="通讯协议:" :label-width="formLabelWidth">
+        <el-form-item label="通讯协议:" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="IP端口:" :label-width="formLabelWidth">
+        <el-form-item label="IP端口:" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="驱动:" :label-width="formLabelWidth">
+        <el-form-item label="驱动:" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -43,7 +52,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-
+import { getDeviceList } from "@/api/device";
 export default {
   name: "Dashboard",
   computed: {
@@ -76,20 +85,26 @@ export default {
     addDevice() {
       this.dialogFormVisible = true;
     },
+    getList() {
+      getDeviceList().then();
+    },
+  },
+
+  created() {
+    this.getList();
   },
 };
 </script>
 
 <style lang="scss" scoped>
- ::v-deep .deviceContainer{
-  .el-form-item__label{
-        font-weight: 400 !important;
-        color: rgba(102, 102, 102, 1);
-    }
+::v-deep .deviceContainer {
+  .el-form-item__label {
+    font-weight: 400 !important;
+    color: rgba(102, 102, 102, 1);
+  }
 }
 .dashboard {
   &-container {
-    margin: 30px;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;

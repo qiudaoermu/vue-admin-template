@@ -26,13 +26,21 @@ export default {
       ],
     };
   },
+  methods:{
+    getList(){
+      getDeviceList().then();
+    }
+  },
+  created(){
+    this.getList();
+  }
+
 };
 </script>
 
 <style lang="scss" scoped>
 .dashboard {
   &-container {
-    margin: 30px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
