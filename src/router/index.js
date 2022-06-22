@@ -62,6 +62,14 @@ export const constantRoutes = [
         component: () => import("@/views/alg/index"),
         meta: { title: "算法场景", icon: "table" },
       },
+      {
+        path: "info",
+        name: "info",
+        component: () => import("@/views/alg/info"),
+        meta: { title: "算法场景详情", icon: "table" },
+        hidden:true
+        
+      }
     ],
   },
   {
