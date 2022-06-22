@@ -31,14 +31,12 @@ class Wsocket {
       console.log("Ws has closed");
     });
   }
-  onGetMessage() {
-    return new Promise((resolve, reject) => {
-      this.ws.addEventListener("message", (event) => {
-        const result = event.data && JSON.parse(event.data);
-        resolve(result);
-      });
-    });
-  }
+  // onGetMessage() {
+  //   this.ws.addEventListener("message", (event) => {
+  //     const result = event.data && JSON.parse(event.data);
+  //     resolve(result);
+  //   });
+  // }
 }
 
 export default Wsocket;

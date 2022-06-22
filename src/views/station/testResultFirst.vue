@@ -36,10 +36,17 @@
                     </el-button>
                    
                   </el-form-item>
+                   <el-form-item label='产品编号:'>
+                    {{sn}}
+                  </el-form-item>
                 </el-form>
                 <div class="data-show-right-top-result">
                   <p>检测结果：</p>
-                  <h3>{{result}}</h3>
+                  <div v-if="sn">
+                    <h3 v-if="result===1">合格</h3>
+                    <h3 style='color:red' v-else>NG</h3>
+                  </div>
+                
                 </div>
               </div>
               <div class="data-show-right-top-list">
@@ -55,16 +62,16 @@
                     width="180"
                   />
                   <el-table-column
-                    prop="state"
-                    label="检测状态"
+                    prop="result"
+                    label="检测结果"
                     width="180"
                   />
                   <el-table-column
                     prop="detectInfo"
                     label="结果">
-                    <template slot-scope="scope" v-if='scope.row.detectInfo'>
-                      <img :src="right" v-if="scope.row.result" />
-                      <img :src="error"  v-else/>
+                    <template slot-scope="scope">
+                      <img :src="right" v-if="scope.row.detectStatus === 1" />
+                      <img :src="error"  v-else-if="!scope.row.detectStatus"/>
                   </template>
                   </el-table-column>
                 </el-table>
@@ -159,6 +166,15 @@ export default {
   components: {
     VChart
   },
+  filters: {
+    filiterResult(res) {
+      if (res === 1) {
+        return "合格"
+      } else {
+        return "NG"
+      }
+    }
+  },
   data() {
     return {
       admin,
@@ -171,36 +187,40 @@ export default {
           name: '二维码',
           result: '',
           key: 1,
-          detectInfo: ''
+          detectInfo: '',
+          detectStatus: 2
         },
         {
           name: '缝隙',
           result: '',
           key: 2,
-          detectInfo: ''
+          detectInfo: '',
+          detectStatus: 2
         },
         {
           name: '缺陷检测',
           result: '',
           key: 3,
-          detectInfo: ''
+          detectInfo: '',
+          detectStatus: 2
         },
         {
           name: '模版匹配',
           result: '',
           key: 4,
-          detectInfo: ''
+          detectInfo: '',
+          detectStatus: 2
         },
         {
           name: '螺丝检测',
           result: '',
           key: 5,
-          detectInfo: ''
+          detectInfo: '',
+          detectStatus: 2
         }
       ],
       logs: [
         { log: '2022-0613  15:30:40.537: CPU使用率达到100%！' },
-        { log: '2022-0613  15:30:40.537: 发生异常错误：索引超出了数组界限，文件名D:MachineVisionPlat SHXDLSourceCodelVer0.5 20210818ProjectsMachineVisionPlat.S，行数120' },
         { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'},
         { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'}
       ],
@@ -265,7 +285,8 @@ export default {
         ]
       },
       ws: '',
-      result: ''
+      result: '',
+      sn: ''
     }
   },
   created() {},
@@ -305,15 +326,18 @@ export default {
     },
     startHandle() {
       this.ws = new Wsocket('socket/pushMessage/1')
-  
-      this.ws.onGetMessage().then(res => {
+      this.ws.ws.addEventListener('message', (event) => {
+        if (event.data === '连接成功') return;
+        const res = event.data && JSON.parse(event.data);
         res.result.forEach(item => {
-          item.name = this.tableData.find(el => el.key === item.pos).name
+          item.name = this.detects[item.pos];
           this.display = 'http://' + process.env.VUE_APP_NGINX_IMG + item.imgUrl.replace('/home','')
         })
+
         this.result = res.eligibleFlag;
         this.tableData = res.result;
-      })
+        this.sn = res.result[0].sn;
+      });
     },
     stopHandle() {
       window.location.reload()
