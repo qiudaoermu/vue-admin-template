@@ -289,7 +289,13 @@ export default {
       sn: ''
     }
   },
-  created() {},
+  created() {
+    console.log('err',{a:1})
+    let socketConnet = window.localStorage.getItem('sockect-connet');
+    if (socketConnet) {
+      this.initSocket()
+    }
+  },
   mounted() {
         console.log(process.env,"prod--------------------------------")
     this.productStatisticsApi()
@@ -302,8 +308,8 @@ export default {
           this.summaryList.forEach(item => {
             item.num = res.data[item.key]
           })
-          this.optionCheck.series[0].data[0].value = this.summaryList[0].num
-          this.optionCheck.series[0].data[1] = this.summaryList[1].num
+          this.optionCheck.series[0].data[0].value = this.summaryList[1].num
+          this.optionCheck.series[0].data[1] = this.summaryList[2].num
         }
       })
     },
@@ -325,21 +331,27 @@ export default {
       return 'success-row'
     },
     startHandle() {
+      window.localStorage.setItem("sockect-connet",true)
+      this.initSocket()
+    },
+    initSocket() {
       this.ws = new Wsocket('socket/pushMessage/1')
       this.ws.ws.addEventListener('message', (event) => {
         if (event.data === '连接成功') return;
         const res = event.data && JSON.parse(event.data);
         res.result.forEach(item => {
           item.name = this.detects[item.pos];
-          this.display = 'http://' + process.env.VUE_APP_NGINX_IMG + item.imgUrl.replace('/home','')
         })
+        const [ firstDetect ] = res.result;
+        this.display = 'http://' + process.env.VUE_APP_NGINX_IMG + firstDetect.imgUrl.replace('/home','')
 
         this.result = res.eligibleFlag;
         this.tableData = res.result;
-        this.sn = res.result[0].sn;
+        this.sn = firstDetect.sn;
       });
     },
     stopHandle() {
+      window.localStorage.removeItem('sockect-connet')
       window.location.reload()
     }
   }
