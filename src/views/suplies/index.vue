@@ -16,8 +16,10 @@
             placeholder="请选择活动区域"
             style="width: 100%"
           >
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option label="相机" value="shanghai"></el-option>
+            <el-option label="光源" value="beijing"></el-option>
+            <el-option label="PLC" value="PLC"></el-option>
+            <el-option label="机器人" value="robbot"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="通讯协议:" :label-width="formLabelWidth">
