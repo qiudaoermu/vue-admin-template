@@ -73,8 +73,8 @@ export default {
     color: rgba(102, 102, 102, 1);
     .boxImg {
       width: 94%;
-      height: 170px;
-      margin-top:15px;
+      height: 160px;
+      margin-top:16px;
     }
     &:hover {
       color: rgba(0, 75, 170, 0.8);
