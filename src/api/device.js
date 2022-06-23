@@ -7,3 +7,17 @@ export function getDeviceList(params) {
     params
   })
 }
+export function addDevice(params) {
+  return request({
+    url: '/screen/addDevice',
+    method: 'post',
+    data:params
+  })
+}
+export function getproductList(params) {
+  return request({
+    url: '/screen/productList',
+    method: 'post',
+    params
+  })
+}
