@@ -1,6 +1,6 @@
 <template>
   <div class="section-container">
-    <h1 class="title">上海海尔洗涤电器有限公司N码合—视觉检测</h1>
+    <h1 class="title">洗衣机下线外观缺陷检测</h1>
     <section class="data-show">
       <div class="data-show-left">
         <div class="data-show-left-top">
@@ -146,11 +146,12 @@ import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
-  GridComponent,
+  GridComponent
 } from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
+import VChart from "vue-echarts";
 import Wsocket from "../package/socket.js"
-import { productStatistics,errorPosStatis } from '@/api/state'
+import Log from "../package/Log";
+import { getTimesTamp } from '@/views/package/utils'
 use([
   CanvasRenderer,
   PieChart,
@@ -220,9 +221,9 @@ export default {
         }
       ],
       logs: [
-        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！' },
-        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'},
-        { log: '2022-0613  15:30:40.537: CPU使用率达到100%！'}
+        { log: '2022-06-13  15:30:30.537: CPU使用率达到87%！' },
+        { log: '2022-06-13  18:30:10.537: CPU使用率达到70%！'},
+        { log: '2022-06-13  19:30:42.537: CPU使用率达到90%！'}
       ],
       numberValidateForm: {
         time: 0
@@ -250,13 +251,14 @@ export default {
         series: [
           {
             data: [
+              150,
               {
                 value: 200,
                 itemStyle: {
                   color: "#a90000",
                 }
               },
-              150,
+             
             ],
             type: "bar",
           },
@@ -289,34 +291,28 @@ export default {
       sn: ''
     }
   },
-  created() {},
+  created() {
+    let socketConnet = window.localStorage.getItem('sockect-connet');
+    if (socketConnet) {
+      this.initSocket()
+    }
+  },
   mounted() {
-        console.log(process.env,"prod--------------------------------")
-    this.productStatisticsApi()
-    this.errorPosStatisApi()
   },
   methods: {
-    productStatisticsApi() {
-      productStatistics().then(res => {
-        if (res.code === 200) {
-          this.summaryList.forEach(item => {
-            item.num = res.data[item.key]
-          })
-          this.optionCheck.series[0].data[0].value = this.summaryList[0].num
-          this.optionCheck.series[0].data[1] = this.summaryList[1].num
-        }
+    productStatisticsApi(res) {
+      this.summaryList.forEach(item => {
+        item.num = res[item.key]
       })
+      this.optionCheck.series[0].data[0] = this.summaryList[1].num
+      this.optionCheck.series[0].data[1].value = this.summaryList[2].num
     },
-    errorPosStatisApi() {
-      errorPosStatis().then(res => {
-        if (res.code === 200) {
-          res.data.forEach(item => {
-            item.key = this.detects[item.pos]
-          })
-          this.optionError.xAxis.data = res.data.map(item => item.key)
-          this.optionError.series[0].data = res.data.map(item => item.num)
-        }
+    errorPosStatisApi(error) {
+      error.forEach(item => {
+        item.key = this.detects[item.pos]
       })
+      this.optionError.xAxis.data = error.map(item => item.key)
+      this.optionError.series[0].data = error.map(item => item.num)
     },
     tableRowClassName({row, rowIndex}) {
       if (rowIndex % 2 === 0) {
@@ -325,21 +321,34 @@ export default {
       return 'success-row'
     },
     startHandle() {
+      window.localStorage.setItem("sockect-connet",true)
+      this.initSocket()
+    },
+    initSocket() {
       this.ws = new Wsocket('socket/pushMessage/1')
       this.ws.ws.addEventListener('message', (event) => {
         if (event.data === '连接成功') return;
         const res = event.data && JSON.parse(event.data);
+        
         res.result.forEach(item => {
           item.name = this.detects[item.pos];
-          this.display = 'http://' + process.env.VUE_APP_NGINX_IMG + item.imgUrl.replace('/home','')
         })
-
+        const [ firstDetect ] = res.result;
+        this.display = "http://" + process.env.VUE_APP_NGINX_IMG + firstDetect.imgUrl.replace("/home", "")
+    
         this.result = res.eligibleFlag;
         this.tableData = res.result;
-        this.sn = res.result[0].sn;
+        this.sn = firstDetect.sn;
+        this.productStatisticsApi(res.product)
+        this.errorPosStatisApi(res.error)
+
+        Log.prettyWarn("---Time---:",getTimesTamp())
+        Log.prettyPrimary("--Websocket Receive Message: ", res);
+        Log.prettyPrimary("Current display Image: ", this.display)
       });
     },
     stopHandle() {
+      window.localStorage.removeItem("sockect-connet")
       window.location.reload()
     }
   }
