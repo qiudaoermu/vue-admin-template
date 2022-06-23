@@ -1,6 +1,6 @@
 <template>
   <div class="section-container">
-    <h1 class="title">上海海尔洗涤电器有限公司N码合—视觉检测</h1>
+    <h1 class="title">洗衣机下线外观缺陷检测</h1>
     <section class="data-show">
       <div class="data-show-left">
         <div class="data-show-left-top">
@@ -146,11 +146,12 @@ import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
-  GridComponent,
+  GridComponent
 } from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
+import VChart from "vue-echarts";
 import Wsocket from "../package/socket.js"
-import { productStatistics,errorPosStatis } from '@/api/state'
+import Log from "../package/Log";
+import { getTimesTamp } from '@/views/package/utils'
 use([
   CanvasRenderer,
   PieChart,
@@ -291,22 +292,18 @@ export default {
     }
   },
   created() {
-    console.log('err',{a:1})
     let socketConnet = window.localStorage.getItem('sockect-connet');
     if (socketConnet) {
       this.initSocket()
     }
   },
   mounted() {
-        console.log(process.env,"prod--------------------------------")
-  
   },
   methods: {
     productStatisticsApi(res) {
       this.summaryList.forEach(item => {
         item.num = res[item.key]
       })
-    
       this.optionCheck.series[0].data[0] = this.summaryList[1].num
       this.optionCheck.series[0].data[1].value = this.summaryList[2].num
     },
@@ -332,21 +329,26 @@ export default {
       this.ws.ws.addEventListener('message', (event) => {
         if (event.data === '连接成功') return;
         const res = event.data && JSON.parse(event.data);
+        
         res.result.forEach(item => {
           item.name = this.detects[item.pos];
         })
         const [ firstDetect ] = res.result;
-        this.display = 'http://' + process.env.VUE_APP_NGINX_IMG + firstDetect.imgUrl.replace('/home','')
-
+        this.display = "http://" + process.env.VUE_APP_NGINX_IMG + firstDetect.imgUrl.replace("/home", "")
+    
         this.result = res.eligibleFlag;
         this.tableData = res.result;
         this.sn = firstDetect.sn;
         this.productStatisticsApi(res.product)
         this.errorPosStatisApi(res.error)
+
+        Log.prettyWarn("---Time---:",getTimesTamp())
+        Log.prettyPrimary("--Websocket Receive Message: ", res);
+        Log.prettyPrimary("Current display Image: ", this.display)
       });
     },
     stopHandle() {
-      window.localStorage.removeItem('sockect-connet')
+      window.localStorage.removeItem("sockect-connet")
       window.location.reload()
     }
   }
