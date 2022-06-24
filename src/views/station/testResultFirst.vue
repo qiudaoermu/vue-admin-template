@@ -42,8 +42,8 @@
                 </el-form>
                 <div class="data-show-right-top-result">
                   <p>检测结果：</p>
-                  <div v-if="sn">
-                    <h3 v-if="result===1">合格</h3>
+                  <div v-if="pos === 5">
+                    <h3 v-if="result">合格</h3>
                     <h3 style='color:red' v-else>NG</h3>
                   </div>
                 
@@ -149,9 +149,9 @@ import {
   GridComponent
 } from "echarts/components";
 import VChart from "vue-echarts";
-import Wsocket from "../package/socket.js"
-import Log from "../package/Log";
-import { getTimesTamp } from '@/views/package/utils'
+import Wsocket from "../../../package/socket.js"
+import Log from "../../../package/Log";
+import { getTimesTamp } from '../../../package/utils'
 use([
   CanvasRenderer,
   PieChart,
@@ -288,7 +288,8 @@ export default {
       },
       ws: '',
       result: '',
-      sn: ''
+      sn: '',
+      pos: ''
     }
   },
   created() {
@@ -336,12 +337,12 @@ export default {
         const [ firstDetect ] = res.result;
         this.display = "http://" + process.env.VUE_APP_NGINX_IMG + firstDetect.imgUrl.replace("/home", "")
     
-        this.result = res.eligibleFlag;
+        this.result = res.result.every(item => item.detectStatus === 1);
         this.tableData = res.result;
         this.sn = firstDetect.sn;
         this.productStatisticsApi(res.product)
         this.errorPosStatisApi(res.error)
-
+        this.pos = res.pos
         Log.prettyWarn("---Time---:",getTimesTamp())
         Log.prettyPrimary("--Websocket Receive Message: ", res);
         Log.prettyPrimary("Current display Image: ", this.display)
