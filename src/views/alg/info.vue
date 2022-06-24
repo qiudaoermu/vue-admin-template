@@ -1,9 +1,15 @@
 <template>
   <div class="dashboard-container">
-    <div><el-button type="primary" size="small" style="margin: 40px"
-      >立即部署</el-button
-    ></div>
-    <el-tabs tab-position="left" style="height:160px;float:left;margin-left:25px" v-model="activeName">
+    <div>
+      <el-button type="primary" size="small" style="margin: 40px"
+        >立即部署</el-button
+      >
+    </div>
+    <el-tabs
+      tab-position="left"
+      style="height: 160px; float: left; margin-left: 25px"
+      v-model="activeName"
+    >
       <el-tab-pane label="算法场景" name="0"></el-tab-pane>
       <el-tab-pane label="功能演示" name="1"></el-tab-pane>
       <el-tab-pane label="应用场景" name="2"></el-tab-pane>
@@ -12,12 +18,14 @@
     <el-input
       type="textarea"
       :rows="17"
-      v-model="textarea"
-      style="width:65%;float:left;margin-left:30px"
+      v-model="textarea[activeName]"
+      style="width: 65%; float: left; margin-left: 30px"
       disabled
+      v-if="activeName != 1"
     >
     </el-input>
-    <div style="clear:both"></div>
+    <img src="/image/info1.jpg" style="width:60%;height:400px; margin-left: 30px" v-else />
+    <div style="clear: both"></div>
   </div>
 </template>
 
@@ -31,7 +39,7 @@ export default {
   },
   data() {
     return {
-      activeName:0,
+      activeName: 0,
       formLabelWidth: "80px",
       box: [
         { img: "123.png", isdeploy: true },
@@ -50,6 +58,13 @@ export default {
         resource: "",
         desc: "",
       },
+      textarea: [
+        "基于海尔家电生产制造多年经验积累，整合了6大类28种缺陷检测模型，开箱即用，同时针对生产流程PLC、MES系统也可以一一键对接。算子检测准确率高，稳定性好。",
+        "",
+        "",
+        "",
+        "",
+      ],
       dialogFormVisible: false,
     };
   },
