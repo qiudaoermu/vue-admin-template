@@ -1,6 +1,6 @@
 <template>
   <div class="containers">
-    <!-- <my-process-palette /> -->
+    <my-process-palette />
 
     <div ref="canvas" class="canvas" />
     <panel v-if="bpmnModeler" ref="panel" :modeler="bpmnModeler" />
@@ -71,7 +71,6 @@ export default {
       console.log(element);
     });
     this.bpmnModeler.on("commandStack.changed", function () {
-      debugger;
       _this.saveSVG(function (err, svg) {
         _this.setEncoded(downloadSvgLink, "diagram.svg", err ? null : svg);
       });
@@ -117,6 +116,7 @@ export default {
         for (var key in djsPalStyle) {
           djsPalette.style[key] = djsPalStyle[key];
         }
+        djsPalette.style.display = 'none'
         const palette = djsPalette.children[0];
         const allGroups = palette.children;
         allGroups[0].style["display"] = "none";

@@ -59,7 +59,12 @@
                   <el-table-column
                     prop="name"
                     label="检测项"
-                    width="180"
+                    width="80"
+                  />
+                  <el-table-column
+                    prop="detectInfo"
+                    label="检测标准"
+                    width="80"
                   />
                   <el-table-column
                     prop="result"
@@ -182,7 +187,7 @@ export default {
       right,
       error,
       display,
-      detects: { 1: '二维码', 2: '缝隙', 3: '缺陷检测', 4: '模版匹配', 5: '螺丝检测' },
+      detects: { 1: '二维码', 2: '缝隙', 3: '划伤划痕', 4: '模版匹配', 5: '螺丝检测' },
       tableData: [
         {
           name: '二维码',
@@ -199,7 +204,7 @@ export default {
           detectStatus: 2
         },
         {
-          name: '缺陷检测',
+          name: '划伤划痕',
           result: '',
           key: 3,
           detectInfo: '',
