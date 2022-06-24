@@ -3,18 +3,18 @@
     <div><el-button type="primary" size="small" style="margin: 40px"
       >立即部署</el-button
     ></div>
-    <el-tabs tab-position="left" style="height:160px;float:left;margin-left:25px">
-      <el-tab-pane label="算法场景"></el-tab-pane>
-      <el-tab-pane label="功能演示"></el-tab-pane>
-      <el-tab-pane label="应用场景"></el-tab-pane>
-      <el-tab-pane label="相关算法"></el-tab-pane>
+    <el-tabs tab-position="left" style="height:160px;float:left;margin-left:25px" v-model="activeName">
+      <el-tab-pane label="算法场景" name="0"></el-tab-pane>
+      <el-tab-pane label="功能演示" name="1"></el-tab-pane>
+      <el-tab-pane label="应用场景" name="2"></el-tab-pane>
+      <el-tab-pane label="相关算法" name="3"></el-tab-pane>
     </el-tabs>
     <el-input
       type="textarea"
       :rows="17"
-      placeholder="请输入内容"
       v-model="textarea"
       style="width:65%;float:left;margin-left:30px"
+      disabled
     >
     </el-input>
     <div style="clear:both"></div>
@@ -31,6 +31,7 @@ export default {
   },
   data() {
     return {
+      activeName:0,
       formLabelWidth: "80px",
       box: [
         { img: "123.png", isdeploy: true },

@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     gotoInfo() {
-      //this.$router.push({ path: "/info" });
+      this.$router.push({ path: "/info" });
     },
   },
   created(){
