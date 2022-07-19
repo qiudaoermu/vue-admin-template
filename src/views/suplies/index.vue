@@ -58,7 +58,7 @@
     </el-dialog>
     <div class="dashboard-box" v-for="item in box">
       <div :class="'boxImg' + item.type">
-        <img :src="'/image/device' + item.type + '.png'" class="img" />
+        <img :src="'/bg/device' + item.type + '.png'" class="img" />
       </div>
       <div>{{ item.name }}</div>
     </div>

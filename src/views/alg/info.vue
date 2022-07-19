@@ -1,10 +1,27 @@
 <template>
   <div class="dashboard-container">
     <div>
-      <el-button type="primary" size="small" style="margin: 40px"
+      <el-button  @click="handleDeploy" type="primary" size="small" style="margin: 40px"
         >立即部署</el-button
       >
+       <el-button type="primary" size="small" style="margin: 40px"
+       @click="addDevice"
+        >新增流程</el-button
+      >
+      <el-select v-model="processValue" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.name"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <el-button type="primary" size="small" style="margin: 40px"
+       @click="handleViewDevice"
+        >查询流程</el-button
+      >
     </div>
+     
     <el-tabs
       tab-position="left"
       style="height: 160px; float: left; margin-left: 25px"
@@ -26,12 +43,39 @@
     </el-input>
     <img src="/image/info1.jpg" style="width:60%;height:400px; margin-left: 30px" v-else />
     <div style="clear: both"></div>
+    <el-dialog
+      title="自定义场景"
+      :visible.sync="dialogFormVisible"
+      width="460px"
+      custom-class="deviceContainer"
+    >
+      <el-form :model="form" :rules="rules" ref="ruleForm">
+        <el-form-item
+          label="型号名称:"
+          :label-width="formLabelWidth"
+          prop="name"
+        >
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="型号描述:"
+          :label-width="formLabelWidth"
+          prop="descInfo"
+        >
+          <el-input v-model="form.descInfo" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddDevice">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-
+import { getSceneProcess } from "@/api/process"
 export default {
   name: "Dashboard",
   computed: {
@@ -39,8 +83,27 @@ export default {
   },
   data() {
     return {
+      processValue: "",
+      options: [],
+      form: {
+        name: "",
+        descInfo: ""
+      },
+      formLabelWidth: "120px",
+      dialogFormVisible: false,
+      rules: {
+        name: [
+          { required: true, message: "请选择设备名称", trigger: "change" },
+        ],
+        type: [
+          { required: true, message: "请选择设备类型", trigger: "change" },
+        ],
+        descInfo: [
+          { required: true, message: "请添加描述", trigger: "change" },
+        ],
+        port: [{ required: true, message: "请选择IP端口", trigger: "change" }],
+      },
       activeName: 0,
-      formLabelWidth: "80px",
       box: [
         { img: "123.png", isdeploy: true },
         { img: "123.png" },
@@ -48,16 +111,7 @@ export default {
         { img: "123.png" },
         { img: "123.png" },
       ],
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      },
+    
       textarea: [
         "基于海尔家电生产制造多年经验积累，整合了6大类28种缺陷检测模型，开箱即用，同时针对生产流程PLC、MES系统也可以一一键对接。算子检测准确率高，稳定性好。",
         "",
@@ -65,12 +119,55 @@ export default {
         "",
         "",
       ],
-      dialogFormVisible: false,
     };
   },
+  mounted() {
+    this.main()
+  },
   methods: {
+    handleDeploy() {
+      this.$router.push({
+        path: "/station/index",
+        query: {
+          sceneInfoId: this.$route.query.id,
+          procId: this.processValue
+        }
+      })
+    },
+    main() {
+      getSceneProcess({
+        id: this.$route.query.id
+      }).then(res => {
+        this.options = res.data
+        console.log(res.data, "data-----")
+      })
+    },
+    handleAddDevice() {
+      this.dialogFormVisible = false;
+      this.$router.push({
+        path: "/process/link",
+        query: {
+          sceneInfoId: this.$route.query.id,
+          name: this.form.name,
+          descInfo: this.form.descInfo
+        }
+      })
+    },
+    handleViewDevice() {
+      if (!this.processValue) {
+        this.$message.warning("请选择型号!!");
+        return
+      }
+      this.$router.push({
+        path: "/process/link",
+        query: {
+          sceneInfoId: this.$route.query.id,
+          procId: this.processValue
+        }
+      })
+    },
     addDevice() {
-      this.dialogFormVisible = true;
+      this.dialogFormVisible = true
     },
   },
 };

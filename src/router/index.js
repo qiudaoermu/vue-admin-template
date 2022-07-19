@@ -37,11 +37,11 @@ export const constantRoutes = [
     hidden: true,
   },
 
-  {
-    path: "/process/link",
-    component: () => import("@/views/process/index"),
-    hidden: true,
-  },
+  // {
+  //   path: "/process/link",
+  //   component: () => import("@/views/process/index"),
+  //   hidden: true,
+  // },
 
   {
     path: "/404",

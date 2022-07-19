@@ -1,8 +1,8 @@
 <template>
   <section class="app-main">
-    <keep-alive>
+    <!-- <keep-alive> -->
       <router-view :key="key" />
-    </keep-alive>
+    <!-- </keep-alive> -->
   </section>
 </template>
 

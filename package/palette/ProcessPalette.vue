@@ -41,9 +41,6 @@
           条码检测
         </div>
       </el-collapse-item>
-   
-     
-  
     </el-collapse>
   </div>
 </template>

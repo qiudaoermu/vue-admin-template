@@ -341,6 +341,7 @@ export default {
       reader.readAsText(file);
       reader.onload = function() {
         let xmlStr = this.result;
+        debugger
         that.createNewDiagram(xmlStr);
       };
     },
