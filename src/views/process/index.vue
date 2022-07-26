@@ -14,6 +14,7 @@
 import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList, addDevice } from "@/api/device";
+import bus from "@/utils/bus";
 import {
   getProcess,
   getServiceList,
@@ -28,7 +29,8 @@ export default {
     return {
       panelConfig,
       initPanConfFlag: false,
-      record: {}
+      record: {},
+      query: {},
     };
   },
   components: {
@@ -36,7 +38,11 @@ export default {
     LF
   },
   mounted() {
+    this.query = this.$route.query
     this.main();
+    this.bus.$on("send",(record)=>{
+      this.emitTransfromRecord(record);
+    })
   },
   methods: {
     initEdit() {
@@ -48,10 +54,10 @@ export default {
     emitTransfromRecord(data) {
       const params = {
         type: 4,
-        procId: +this.$route.query.procId,
-        sceneInfoId: +this.$route.query.sceneInfoId,
-        descInfo: this.$route.query.descInfo,
-        name: this.$route.query.name,
+        procId: +this.query.procId,
+        sceneInfoId: +this.query.sceneInfoId,
+        descInfo: this.query.descInfo,
+        name: this.query.name,
         ...data
       };
       // 修改
@@ -100,7 +106,8 @@ export default {
             label: item.name
           },
           deviceType: item.type,
-          deviceId: id
+          deviceId: id,
+          deviceName: item.name
         };
       });
 

@@ -26,6 +26,7 @@ module.exports = {
    */
   publicPath: "/",
   outputDir: "html",
+  runtimeCompiler: true,
   assetsDir: "",
   lintOnSave: process.env.NODE_ENV === "development",
   productionSourceMap: false,
@@ -46,6 +47,7 @@ module.exports = {
     resolve: {
       alias: {
         "@": resolve("src"),
+        // "@drag": resolve("node_modules/view-generator/src")
       },
     },
   },

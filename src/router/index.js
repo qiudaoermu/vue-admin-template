@@ -5,7 +5,7 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from "@/layout";
-
+// import preview from "@drag/views/index/preview.vue";
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -37,11 +37,12 @@ export const constantRoutes = [
     hidden: true,
   },
 
-  // {
-  //   path: "/process/link",
-  //   component: () => import("@/views/process/index"),
-  //   hidden: true,
-  // },
+  {
+    path: "/debug",
+    name: "debug",
+    component: () => import("logicflow-vue/src/components/debug/index.vue"),
+    hidden: true
+  },
 
   {
     path: "/404",
@@ -67,9 +68,8 @@ export const constantRoutes = [
         name: "info",
         component: () => import("@/views/alg/info"),
         meta: { title: "算法场景详情", icon: "table" },
-        hidden:true
-        
-      }
+        hidden: true,
+      },
     ],
   },
   {
@@ -95,7 +95,6 @@ export const constantRoutes = [
       },
     ],
   },
-
   {
     path: "/station",
     component: Layout,
@@ -105,6 +104,32 @@ export const constantRoutes = [
         name: "Station",
         component: () => import("@/views/station/index"),
         meta: { title: "运行状态", icon: "form" },
+      },
+    ],
+  },
+
+  // {
+  //   path: "/preview",
+  //   name: "preview",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       name: "preview",
+  //       component: preview,
+  //       meta: { title: "预览展示", icon: "form" },
+  //     },
+  //   ],
+  // },
+  {
+    path: "/drag",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        name: "drag",
+        component: () => import("@/views/drag/index"),
+        meta: { title: "展示配置", icon: "form" },
       },
     ],
   },
