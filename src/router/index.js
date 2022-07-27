@@ -108,6 +108,18 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    path: "/station",
+    component: Layout,
+    children: [
+      {
+        path: "analysis",
+        name: "analysis",
+        component: () => import("@/views/station/analysis.vue"),
+        meta: { title: "json解析", icon: "form" },
+      }
+    ],
+  },
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },

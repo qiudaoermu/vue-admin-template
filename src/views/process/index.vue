@@ -6,6 +6,7 @@
       :panelConfig="panelConfig"
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
+      @trigger="trigger"
     />
   </div>
 </template>
@@ -39,6 +40,10 @@ export default {
     this.main();
   },
   methods: {
+    //触发调试
+    trigger(form) {
+      console.log(form);
+    },
     initEdit() {
       if (!this.$route.query.procId) return;
       getProcess({ procId: this.$route.query.procId }).then(res => {
