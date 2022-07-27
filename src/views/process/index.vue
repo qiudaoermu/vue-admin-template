@@ -15,6 +15,7 @@
 import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList, addDevice } from "@/api/device";
+import { getDict } from "@/api/dict";
 import bus from "@/utils/bus";
 import {
   getProcess,
@@ -32,11 +33,18 @@ export default {
       initPanConfFlag: false,
       record: {},
       query: {},
+      dict: {   //下拉框的字典
+        imgType: {},  //图片格式
+        triggerType: {} //触发方式
+      }
     };
   },
   components: {
     // VueBpmn,
     LF
+  },
+  created() {
+    this.getDict()
   },
   mounted() {
     this.query = this.$route.query
@@ -49,6 +57,16 @@ export default {
     //触发调试
     trigger(form) {
       console.log(form);
+    },
+    getDict() {
+      getDict({param:'img_fmt'}).then(res => {
+        let data = res.data
+        this.dict.imgType = data
+      })
+      getDict({param:'tri_way'}).then(res => {
+        let data = res.data
+        this.dict.triggerType = data
+      })
     },
     initEdit() {
       if (!this.$route.query.procId) return;
