@@ -9,10 +9,14 @@ import locale from "element-ui/lib/locale/lang/en"; // lang i18n
 
 import "@/styles/index.scss"; // global css
 import * as components from "logicflow-vue/src/install.js"
-
+// 加载view-generator项目组件
+// import * as dragsComponets from "@drag/install.js";
 for (const i in components) {
   Vue.use(components[i])
 }
+// dragsComponets.aioComponents.component.forEach((item) => {
+//   Vue.component(item.name, item);
+// });
 
 import App from "./App";
 import store from "./store";
@@ -20,12 +24,12 @@ import router from "./router";
 import "@/icons"; // icon
 import "@/permission"; // permission control
 
-import { vuePlugin } from "../package/highlight";
-import "highlight.js/styles/atom-one-dark-reasonable.css";
-Vue.use(vuePlugin);
+// import { vuePlugin } from "../package/highlight";
+// import "highlight.js/styles/atom-one-dark-reasonable.css";
+// Vue.use(vuePlugin);
 
-import MyPD from "../package/index.js";
-Vue.use(MyPD);
+// import MyPD from "../package/index.js";
+// Vue.use(MyPD);
 
 import componets from "@/components";
 Vue.use(componets);
