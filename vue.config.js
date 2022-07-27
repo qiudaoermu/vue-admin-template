@@ -47,7 +47,7 @@ module.exports = {
     resolve: {
       alias: {
         "@": resolve("src"),
-        // "@drag": resolve("node_modules/view-generator/src")
+        // "@drag": resolve("node_modules/drag-generator/src")
       },
     },
   },
