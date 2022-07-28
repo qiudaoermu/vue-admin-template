@@ -16,7 +16,6 @@ import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList } from "@/api/device";
 import { getDict } from "@/api/dict";
-import bus from "@/utils/bus";
 import { cameraSocket } from './cameraSocket'
 import {
   getProcess,
