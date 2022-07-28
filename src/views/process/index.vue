@@ -14,7 +14,7 @@
 <script>
 import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
-import { getDeviceList, addDevice } from "@/api/device";
+import { getDeviceList } from "@/api/device";
 import { getDict } from "@/api/dict";
 import bus from "@/utils/bus";
 import { cameraSocket } from './cameraSocket'
@@ -50,9 +50,6 @@ export default {
   mounted() {
     this.query = this.$route.query
     this.main();
-    this.bus.$on("send",(record)=>{
-      this.emitTransfromRecord(record);
-    })
   },
   methods: {
     //触发调试
@@ -72,7 +69,7 @@ export default {
       })
     },
     initEdit() {
-      if (!this.$route.query.procId) return;
+      if (!this.query.procId) return;
       getProcess({ procId: this.$route.query.procId }).then(res => {
         this.record = res.data;
       });
@@ -92,7 +89,7 @@ export default {
         cameraSocket()
       }
       // 修改
-      if (this.$route.query.procId) {
+      if (this.query.procId) {
         modifyProcess(params).then(res => {
           this.$message({
             type: "success",
