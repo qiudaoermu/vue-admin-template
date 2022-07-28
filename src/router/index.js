@@ -107,6 +107,18 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    path: "/station",
+    component: Layout,
+    children: [
+      {
+        path: "analysis",
+        name: "analysis",
+        component: () => import("@/views/station/analysis.vue"),
+        meta: { title: "json解析", icon: "form" },
+      }
+    ],
+  },
 
   // {
   //   path: "/preview",

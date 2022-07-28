@@ -6,6 +6,7 @@
       :panelConfig="panelConfig"
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
+      @trigger="trigger"
     />
   </div>
 </template>
@@ -14,6 +15,7 @@
 import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList } from "@/api/device";
+import { getDict } from "@/api/dict";
 import {
   getProcess,
   getServiceList,
@@ -30,20 +32,38 @@ export default {
       initPanConfFlag: false,
       record: {},
       query: {},
+      dict: {   //下拉框的字典
+        imgType: {},  //图片格式
+        triggerType: {} //触发方式
+      }
     };
   },
   components: {
     // VueBpmn,
     LF
   },
-  activated() {
-    // this.initEdit()
+  created() {
+    this.getDict()
   },
   mounted() {
     this.query = this.$route.query
     this.main();
   },
   methods: {
+    //触发调试
+    trigger(form) {
+      console.log(form);
+    },
+    getDict() {
+      getDict({param:'img_fmt'}).then(res => {
+        let data = res.data
+        this.dict.imgType = data
+      })
+      getDict({param:'tri_way'}).then(res => {
+        let data = res.data
+        this.dict.triggerType = data
+      })
+    },
     initEdit() {
       if (!this.query.procId) return;
       getProcess({ procId: this.$route.query.procId }).then(res => {
