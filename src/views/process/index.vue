@@ -16,6 +16,8 @@ import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList } from "@/api/device";
 import { getDict } from "@/api/dict";
+import bus from "@/utils/bus";
+import { cameraSocket } from './cameraSocket'
 import {
   getProcess,
   getServiceList,
@@ -58,10 +60,12 @@ export default {
       getDict({param:'img_fmt'}).then(res => {
         let data = res.data
         this.dict.imgType = data
+        window.sessionStorage.setItem("imgType", JSON.stringify(data));
       })
       getDict({param:'tri_way'}).then(res => {
         let data = res.data
         this.dict.triggerType = data
+        window.sessionStorage.setItem("triggerType", JSON.stringify(data));
       })
     },
     initEdit() {
@@ -71,6 +75,8 @@ export default {
       });
     },
     emitTransfromRecord(data) {
+      console.log(data);
+      debugger
       const params = {
         type: 4,
         procId: +this.query.procId,
@@ -79,6 +85,9 @@ export default {
         name: this.query.name,
         ...data
       };
+      if (data.isTest===true) {
+        cameraSocket()
+      }
       // 修改
       if (this.query.procId) {
         modifyProcess(params).then(res => {
