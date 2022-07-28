@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">工业视觉一体机-X系列</h3>
+        <h3 class="title">工业视网膜一体机</h3>
       </div>
 
       <el-form-item prop="userName">

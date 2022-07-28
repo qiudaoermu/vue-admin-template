@@ -13,8 +13,7 @@
 <script>
 import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
-import { getDeviceList, addDevice } from "@/api/device";
-import bus from "@/utils/bus";
+import { getDeviceList } from "@/api/device";
 import {
   getProcess,
   getServiceList,
@@ -37,16 +36,16 @@ export default {
     // VueBpmn,
     LF
   },
+  activated() {
+    // this.initEdit()
+  },
   mounted() {
     this.query = this.$route.query
     this.main();
-    this.bus.$on("send",(record)=>{
-      this.emitTransfromRecord(record);
-    })
   },
   methods: {
     initEdit() {
-      if (!this.$route.query.procId) return;
+      if (!this.query.procId) return;
       getProcess({ procId: this.$route.query.procId }).then(res => {
         this.record = res.data;
       });
@@ -61,7 +60,7 @@ export default {
         ...data
       };
       // 修改
-      if (this.$route.query.procId) {
+      if (this.query.procId) {
         modifyProcess(params).then(res => {
           this.$message({
             type: "success",

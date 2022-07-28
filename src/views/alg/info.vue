@@ -10,8 +10,8 @@
       >
       <el-select v-model="processValue" placeholder="请选择">
         <el-option
-          v-for="item in options"
-          :key="item.name"
+          v-for="(item,index) in options"
+          :key="index"
           :label="item.name"
           :value="item.id">
         </el-option>
