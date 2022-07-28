@@ -14,6 +14,7 @@ export function addDevice(params) {
     data:params
   })
 }
+
 export function getproductList(params) {
   return request({
     url: '/device/productList',

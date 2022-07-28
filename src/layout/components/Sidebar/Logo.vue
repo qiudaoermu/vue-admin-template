@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Admin Template',
+      title: '工业视网膜一体机',
       logo
     }
   }
