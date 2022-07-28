@@ -2,13 +2,13 @@ import request from "@/utils/request";
 
 export function errorPosStatis() {
   return request({
-    url: "/screen/errorPosStatis",
+    url: "/device/errorPosStatis",
     method: "post",
   });
 }
 export function productStatistics() {
   return request({
-    url: "/screen/productStatistics",
+    url: "/device/productStatistics",
     method: "post",
   });
 }
