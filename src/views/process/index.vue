@@ -75,8 +75,6 @@ export default {
       });
     },
     emitTransfromRecord(data) {
-      console.log(data);
-      debugger
       const params = {
         type: 4,
         procId: +this.query.procId,
@@ -85,8 +83,10 @@ export default {
         name: this.query.name,
         ...data
       };
-      if (data.isTest===true) {
-        cameraSocket()
+      console.log(data.proc[0].isTest);
+      if (data.proc[0].isTest===true) {
+        cameraSocket(params)
+        return
       }
       // 修改
       if (this.query.procId) {
