@@ -2,11 +2,13 @@ import Wsocket from "../../../package/socket.js";
 
 export function cameraSocket(params) {
   const ws = new Wsocket("socket/pushMessage/10086")
+  let res = {}
   let json = {
     flag: "device_single_step_debug",
     userId: '10086',
     deviceInfo: {
       id: params.proc[0].deviceId,
+      type: params.proc[0].deviceType,
       ...params.proc[0],
     },
   }
@@ -14,8 +16,14 @@ export function cameraSocket(params) {
     ...json
   });
   ws.onSendMessage(sendParams);
-  ws.ws.addEventListener("message", event => {
-    if (event.data === "连接成功") return;
-    const res = event.data && JSON.parse(event.data);
+  return new Promise((resolve, reject) => {
+    ws.ws.addEventListener("message", event => {
+      if (event.data === "连接成功") return;
+      res = event.data && JSON.parse(event.data);
+      console.log(1);
+      ws.onSendMessage(JSON.stringify({"flag":"stop","stopType":"device_single_step_debug"}))
+      resolve(res)
+    })
+    console.log(2);
   })
 }

@@ -7,6 +7,7 @@
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
       @trigger="trigger"
+      :socketResponse="socketResponse"
     />
   </div>
 </template>
@@ -36,7 +37,8 @@ export default {
       dict: {   //下拉框的字典
         imgType: {},  //图片格式
         triggerType: {} //触发方式
-      }
+      },
+      socketResponse: {}  //单步调试返回值
     };
   },
   components: {
@@ -82,9 +84,11 @@ export default {
         name: this.query.name,
         ...data
       };
-      console.log(data.proc[0].isTest);
-      if (data.proc[0].isTest===true) {
-        cameraSocket(params)
+      if (data.proc[0].isTest === true) {
+        //是单步调试
+        cameraSocket(params).then(res => {
+          this.socketResponse = res
+        })
         return
       }
       // 修改
