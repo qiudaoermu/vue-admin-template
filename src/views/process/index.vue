@@ -15,7 +15,7 @@
 <script>
 import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
-import { getDeviceList } from "@/api/device";
+import { getDeviceList,algTest } from "@/api/device";
 import { getDict } from "@/api/dict";
 import { cameraSocket } from './cameraSocket'
 import {
@@ -84,11 +84,26 @@ export default {
         name: this.query.name,
         ...data
       };
+      console.log(params);
       if (data.proc[0].isTest === true) {
         //是单步调试
-        cameraSocket(params).then(res => {
-          this.socketResponse = res
-        })
+        if (data.proc[0].deviceType==='camera') {
+          cameraSocket(params).then(res => {
+            this.socketResponse = res
+          })
+        }else if(data.proc[0].algParam.description === "detect_gap") {
+          //门缝
+          let {algCriterion, algParam, algType} = data.proc[0]
+          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'Algo_detect_barcode'}).then(res => {
+            let data = res.data
+          })
+        }else if(data.proc[0].algName === "识别条形码") {
+          //门缝
+          let {algCriterion, algParam, algType} = data.proc[0]
+          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'Algo_detect_barcode'}).then(res => {
+            let data = res.data
+          })
+        }
         return
       }
       // 修改

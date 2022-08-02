@@ -22,3 +22,12 @@ export function getproductList(params) {
     params
   })
 }
+
+export function algTest(data) {
+  //算子调试
+  return request({
+    url: '/algorithm/algTest',
+    method: 'post',
+    data
+  })
+}

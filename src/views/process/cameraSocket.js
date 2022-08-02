@@ -20,10 +20,8 @@ export function cameraSocket(params) {
     ws.ws.addEventListener("message", event => {
       if (event.data === "连接成功") return;
       res = event.data && JSON.parse(event.data);
-      console.log(1);
       ws.onSendMessage(JSON.stringify({"flag":"stop","stopType":"device_single_step_debug"}))
       resolve(res)
     })
-    console.log(2);
   })
 }
