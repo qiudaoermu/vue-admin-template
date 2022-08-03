@@ -96,7 +96,7 @@ export default {
             cameraSocket(params).then(res => {
               this.socketResponse = res
             })
-          }else if(item.algParam.description === "detect_gap") {
+          }else if(item.breif === "libAlgo_detect_gap") {
             //门缝
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
@@ -112,7 +112,7 @@ export default {
           return false
         }
       }
-      
+      debugger
       // 修改
       if (this.query.procId) {
         modifyProcess(params).then(res => {
