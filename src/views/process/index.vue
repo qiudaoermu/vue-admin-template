@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import LF from "logicflow-vue/src/components/LF";
+// import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList,algTest } from "@/api/device";
 import { getDict } from "@/api/dict";
@@ -43,7 +43,7 @@ export default {
   },
   components: {
     // VueBpmn,
-    LF
+    // LF
   },
   created() {
     this.getDict()
@@ -75,7 +75,7 @@ export default {
         this.record = res.data;
       });
     },
-    emitTransfromRecord(data) {
+   emitTransfromRecord(data) {
       if (data.closeSocket) {
         cameraSocket({},true)
         return
