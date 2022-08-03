@@ -78,6 +78,7 @@ export default {
     emitTransfromRecord(data) {
       if (data.closeSocket) {
         cameraSocket({},true)
+        return
       }
       const params = {
         type: 4,
