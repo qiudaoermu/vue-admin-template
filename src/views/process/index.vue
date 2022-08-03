@@ -75,7 +75,11 @@ export default {
         this.record = res.data;
       });
     },
-    emitTransfromRecord(data) {
+   emitTransfromRecord(data) {
+      if (data.closeSocket) {
+        cameraSocket({},true)
+        return
+      }
       const params = {
         type: 4,
         procId: +this.query.procId,
@@ -85,26 +89,29 @@ export default {
         ...data
       };
       console.log(params);
-      if (data.proc[0].isTest === true) {
-        //是单步调试
-        if (data.proc[0].deviceType==='camera') {
-          cameraSocket(params).then(res => {
-            this.socketResponse = res
-          })
-        }else if(data.proc[0].algParam.description === "detect_gap") {
-          //门缝
-          let {algCriterion, algParam, algType} = data.proc[0]
-          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'Algo_detect_barcode'}).then(res => {
-            let data = res.data
-          })
-        }else if(data.proc[0].algName === "识别条形码") {
-          //门缝
-          let {algCriterion, algParam, algType} = data.proc[0]
-          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'Algo_detect_barcode'}).then(res => {
-            let data = res.data
-          })
+      for (let i = 0; i < data.proc.length; i++) {
+        const item = data.proc[i];
+        if (item.isTest === true) {
+          //是单步调试
+          if (item.deviceType==='camera') {
+            cameraSocket(params).then(res => {
+              this.socketResponse = res
+            })
+          }else if(item.algParam.description === "detect_gap") {
+            //门缝
+            let {algCriterion, algParam, algType} = item
+            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
+              let data = res.data
+            })
+          }else if(item.breif === "Algo_detect_barcode") {
+            //条码
+              let {algCriterion, algParam, algType} = item
+              algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
+                let data = res.data
+              })
+            }
+          return false
         }
-        return
       }
       
       // 修改
