@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "packages": {
+    "logicflow-vue": {
+      "signature": "c2b62a6be21e2966d8afdd1634713f0b"
+    },
+    "logicflow-vuex": {
+      "signature": "a9ca44b65b21db7304b50bd1e8cead67",
+      "file": true
+    },
+    "drag-generator": {
+      "signature": "a309c9df102c92e9024f4adcfe249154"
+    }
+  }
+}
