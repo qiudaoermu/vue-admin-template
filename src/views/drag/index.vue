@@ -12,7 +12,7 @@ export default {
     return {}
   },
   components: {
-    drag
+    // drag
   },
   created(){},
   mounted(){},

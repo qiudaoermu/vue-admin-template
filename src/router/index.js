@@ -38,13 +38,6 @@ export const constantRoutes = [
   },
 
   {
-    path: "/debug",
-    name: "debug",
-    component: () => import("logicflow-vue/src/components/debug/index.vue"),
-    hidden: true
-  },
-
-  {
     path: "/404",
     component: () => import("@/views/404"),
     hidden: true,
