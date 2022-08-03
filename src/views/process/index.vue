@@ -88,7 +88,6 @@ export default {
         name: this.query.name,
         ...data
       };
-      console.log(params);
       for (let i = 0; i < data.proc.length; i++) {
         const item = data.proc[i];
         if (item.isTest === true) {
