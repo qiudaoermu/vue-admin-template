@@ -17,3 +17,4 @@ tests/**/coverage/
 *.zip
 html
 .yalc
+yalc.lock

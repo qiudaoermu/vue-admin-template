@@ -75,7 +75,7 @@ export default {
         this.record = res.data;
       });
     },
-   emitTransfromRecord(data) {
+   emitTransfromRecord(data, callback) {
       if (data.closeSocket) {
         cameraSocket({},true)
         return
@@ -88,6 +88,7 @@ export default {
         name: this.query.name,
         ...data
       };
+      console.log(data.proc,"proc")
       for (let i = 0; i < data.proc.length; i++) {
         const item = data.proc[i];
         if (item.isTest === true) {
@@ -95,18 +96,21 @@ export default {
           if (item.deviceType==='camera') {
             cameraSocket(params).then(res => {
               this.socketResponse = res
+              callback(this.socketResponse)
             })
           }else if(item.breif === "libAlgo_detect_gap") {
             //门缝
             let {algCriterion, algParam, algType} = item
-            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
+            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_gap'}).then(res => {
               let data = res.data
+              callback()
             })
-          }else if(item.breif === "Algo_detect_barcode") {
+          }else if(item.breif === "libAlgo_detect_barcode") {
             //条码
               let {algCriterion, algParam, algType} = item
               algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
                 let data = res.data
+                callback()
               })
             }
           return false
