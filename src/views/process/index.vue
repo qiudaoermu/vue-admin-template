@@ -6,6 +6,7 @@
       :panelConfig="panelConfig"
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
+      @emitPostGraphData="emitPostGraphData"
       @trigger="trigger"
       :socketResponse="socketResponse"
     />
@@ -75,7 +76,7 @@ export default {
         this.record = res.data;
       });
     },
-   emitTransfromRecord(data, callback) {
+    emitTransfromRecord(data, callback) {
       if (data.closeSocket) {
         cameraSocket({},true)
         return
@@ -117,6 +118,16 @@ export default {
           return false
         }
       }
+    },
+    emitPostGraphData(data) {
+      const params = {
+        type: 4,
+        procId: +this.query.procId,
+        sceneInfoId: +this.query.sceneInfoId,
+        descInfo: this.query.descInfo,
+        name: this.query.name,
+        ...data
+      };
       // 修改
       if (this.query.procId) {
         modifyProcess(params).then(res => {
