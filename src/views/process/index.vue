@@ -76,10 +76,7 @@ export default {
       });
     },
    emitTransfromRecord(data, callback) {
-      if (data.closeSocket) {
-        cameraSocket({},true)
-        return
-      }
+      
       const params = {
         type: 4,
         procId: +this.query.procId,
@@ -88,34 +85,32 @@ export default {
         name: this.query.name,
         ...data
       };
-      console.log(data.proc,"proc")
-      for (let i = 0; i < data.proc.length; i++) {
-        const item = data.proc[i];
-        if (item.isTest === true) {
-          //是单步调试
-          if (item.deviceType==='camera') {
-            cameraSocket(params).then(res => {
-              this.socketResponse = res
-              callback && callback(this.socketResponse)
-            })
-          }else if(item.breif === "libAlgo_detect_gap") {
-            //门缝
+      console.log(data,"record")
+      if (data.isTest === true) {
+        let item = data
+        //是单步调试
+        if (item.deviceType==='camera') {
+          cameraSocket(item).then(res => {
+            this.socketResponse = res
+            callback && callback(this.socketResponse)
+          })
+        }else if(item.breif === "libAlgo_detect_gap") {
+          //门缝
+          let {algCriterion, algParam, algType} = item
+          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
+            let data = res.data
+            this.socketResponse = data
+            callback && callback(this.socketResponse)
+          })
+        }else if(item.breif === "libAlgo_detect_barcode") {
+          //条码
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
               let data = res.data
-              this.socketResponse = data
-              callback && callback(this.socketResponse)
+              callback && callback()
             })
-          }else if(item.breif === "libAlgo_detect_barcode") {
-            //条码
-              let {algCriterion, algParam, algType} = item
-              algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
-                let data = res.data
-                callback && callback()
-              })
-            }
-          return false
-        }
+          }
+        return false
       }
       // 修改
       if (this.query.procId) {

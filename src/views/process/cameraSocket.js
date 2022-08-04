@@ -8,9 +8,9 @@ export function cameraSocket(params) {
        flag: "device_single_step_debug",
        userId: "10086",
        deviceInfo: {
-         id: params.proc[0].deviceId,
-         type: params.proc[0].deviceType,
-         ...params.proc[0],
+         id: params.deviceId,
+         type: params.deviceType,
+         ...params,
        },
      };
      const sendParams = JSON.stringify({
