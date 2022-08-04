@@ -96,7 +96,7 @@ export default {
           if (item.deviceType==='camera') {
             cameraSocket(params).then(res => {
               this.socketResponse = res
-              callback(this.socketResponse)
+              callback && callback(this.socketResponse)
             })
           }else if(item.breif === "libAlgo_detect_gap") {
             //门缝
@@ -104,14 +104,14 @@ export default {
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
               let data = res.data
               this.socketResponse = data
-              callback(this.socketResponse)
+              callback && callback(this.socketResponse)
             })
           }else if(item.breif === "libAlgo_detect_barcode") {
             //条码
               let {algCriterion, algParam, algType} = item
               algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
                 let data = res.data
-                callback()
+                callback && callback()
               })
             }
           return false
