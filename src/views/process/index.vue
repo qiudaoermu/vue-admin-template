@@ -101,14 +101,15 @@ export default {
           }else if(item.breif === "libAlgo_detect_gap") {
             //门缝
             let {algCriterion, algParam, algType} = item
-            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_gap'}).then(res => {
+            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
               let data = res.data
-              callback()
+              this.socketResponse = data
+              callback(this.socketResponse)
             })
           }else if(item.breif === "libAlgo_detect_barcode") {
             //条码
               let {algCriterion, algParam, algType} = item
-              algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
+              algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
                 let data = res.data
                 callback()
               })
@@ -116,7 +117,6 @@ export default {
           return false
         }
       }
-      debugger
       // 修改
       if (this.query.procId) {
         modifyProcess(params).then(res => {
