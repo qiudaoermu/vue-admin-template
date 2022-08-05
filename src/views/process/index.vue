@@ -77,7 +77,6 @@ export default {
       });
     },
     emitTransfromRecord(data, callback) {
-
       if (data.isTest === true) {
         let item = data
         //是单步调试
