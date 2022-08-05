@@ -6,6 +6,7 @@
       :panelConfig="panelConfig"
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
+      @emitPostGraphData="emitPostGraphData"
       @trigger="trigger"
       :socketResponse="socketResponse"
     />
@@ -75,8 +76,8 @@ export default {
         this.record = res.data;
       });
     },
-   emitTransfromRecord(data, callback) {
-      
+    emitTransfromRecord(data, callback) {
+
       const params = {
         type: 4,
         procId: +this.query.procId,
@@ -118,7 +119,19 @@ export default {
             this.socketResponse = data
             callback && callback(this.socketResponse)
           })
-        }
+        }else if (item.breif === "libAlgo_detect_luosi") {
+            let {algCriterion, algParam, algType} = item
+            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_luosi'}).then(res => {
+              let data = res.data
+                callback && callback(res.data)
+            })
+        } else if (item.breif === "libAlgodetect_scratch") {
+            let {algCriterion, algParam, algType} = item
+            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgodetect_scratch'}).then(res => {
+              let data = res.data
+                callback && callback(res.data)
+            })
+          }
         return false
       }
       // 修改
@@ -226,7 +239,7 @@ export default {
       this.initPanConf();
       this.initEdit();
     }
-  }
+}
 };
 </script>
 
