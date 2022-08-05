@@ -119,11 +119,12 @@ export default {
             this.socketResponse = data
             callback && callback(this.socketResponse)
           })
-        }else if (item.breif === "libAlgo_detect_luosi") {
+        }else if (item.breif === "libAlgo_detect_luosihe") {
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_luosi'}).then(res => {
               let data = res.data
-                callback && callback(res.data)
+              this.socketResponse = data
+              callback && callback(this.socketResponse)
             })
         } else if (item.breif === "libAlgodetect_scratch") {
             let {algCriterion, algParam, algType} = item
