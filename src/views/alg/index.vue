@@ -30,6 +30,7 @@
           class="avatar-uploader"
           :action="action"
           :show-file-list="false"
+          accept=".jpg,.png,.jpeg"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
