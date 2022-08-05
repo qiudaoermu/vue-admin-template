@@ -104,12 +104,21 @@ export default {
           })
         }else if(item.breif === "libAlgo_detect_barcode") {
           //条码
-            let {algCriterion, algParam, algType} = item
-            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
-              let data = res.data
-              callback && callback()
-            })
-          }
+          let {algCriterion, algParam, algType} = item
+          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
+            let data = res.data
+            this.socketResponse = data
+            callback && callback(this.socketResponse)
+          })
+        }else if(item.breif === "libAlgo_detect_qbar") {
+          //二维码
+          let {algCriterion, algParam, algType} = item
+          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
+            let data = res.data
+            this.socketResponse = data
+            callback && callback(this.socketResponse)
+          })
+        }
         return false
       }
       // 修改
