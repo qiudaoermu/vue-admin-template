@@ -76,7 +76,7 @@ export default {
         this.record = res.data;
       });
     },
-   emitTransfromRecord(data, callback) {
+    emitTransfromRecord(data, callback) {
 
       const params = {
         type: 4,
@@ -115,16 +115,19 @@ export default {
               let {algCriterion, algParam, algType} = item
               algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
                 let data = res.data
+                 callback && callback(res.data)
               })
           } else if (item.breif === "libAlgo_detect_luosi") {
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_luosi'}).then(res => {
               let data = res.data
+              callback && callback(res.data)
             })
           } else if (item.breif === "libAlgodetect_scratch") {
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgodetect_scratch'}).then(res => {
               let data = res.data
+              callback && callback(res.data)
             })
           }
           return false
@@ -244,9 +247,8 @@ export default {
       // this.panelConfig.service.list = serviceList.data
       this.initPanConf();
       this.initEdit();
-    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>
