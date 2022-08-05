@@ -105,19 +105,21 @@ export default {
           })
         }else if(item.breif === "libAlgo_detect_barcode") {
           //条码
-            let {algCriterion, algParam, algType} = item
-            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
-              let data = res.data
-              callback && callback()
-            })
-        }else if(item.breif === "Algo_detect_barcode") {
-            //条码
-              let {algCriterion, algParam, algType} = item
-              algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
-                let data = res.data
-                 callback && callback(res.data)
-              })
-        } else if (item.breif === "libAlgo_detect_luosi") {
+          let {algCriterion, algParam, algType} = item
+          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
+            let data = res.data
+            this.socketResponse = data
+            callback && callback(this.socketResponse)
+          })
+        }else if(item.breif === "libAlgo_detect_qbar") {
+          //二维码
+          let {algCriterion, algParam, algType} = item
+          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
+            let data = res.data
+            this.socketResponse = data
+            callback && callback(this.socketResponse)
+          })
+        }else if (item.breif === "libAlgo_detect_luosi") {
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_luosi'}).then(res => {
               let data = res.data
@@ -130,18 +132,8 @@ export default {
                 callback && callback(res.data)
             })
           }
-          return false
-        }
-    },
-    emitPostGraphData(data) {
-      const params = {
-        type: 4,
-        procId: +this.query.procId,
-        sceneInfoId: +this.query.sceneInfoId,
-        descInfo: this.query.descInfo,
-        name: this.query.name,
-        ...data
-      };
+        return false
+      }
       // 修改
       if (this.query.procId) {
         modifyProcess(params).then(res => {
