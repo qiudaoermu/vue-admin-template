@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "logicflow-vue": {
-      "signature": "e8a0349e5d50735fbb128cbb0eb518b3"
+      "signature": "3beeeeb282eb68a1ff47a62033064b69"
     },
     "logicflow-vuex": {
       "signature": "a9ca44b65b21db7304b50bd1e8cead67",

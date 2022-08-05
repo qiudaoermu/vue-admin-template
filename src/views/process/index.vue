@@ -110,29 +110,28 @@ export default {
               let data = res.data
               callback && callback()
             })
-          }else if(item.breif === "Algo_detect_barcode") {
+        }else if(item.breif === "Algo_detect_barcode") {
             //条码
               let {algCriterion, algParam, algType} = item
               algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
                 let data = res.data
                  callback && callback(res.data)
               })
-          } else if (item.breif === "libAlgo_detect_luosi") {
+        } else if (item.breif === "libAlgo_detect_luosi") {
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_luosi'}).then(res => {
               let data = res.data
-              callback && callback(res.data)
+                callback && callback(res.data)
             })
-          } else if (item.breif === "libAlgodetect_scratch") {
+        } else if (item.breif === "libAlgodetect_scratch") {
             let {algCriterion, algParam, algType} = item
             algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgodetect_scratch'}).then(res => {
               let data = res.data
-              callback && callback(res.data)
+                callback && callback(res.data)
             })
           }
           return false
         }
-      }
     },
     emitPostGraphData(data) {
       const params = {
@@ -247,8 +246,9 @@ export default {
       // this.panelConfig.service.list = serviceList.data
       this.initPanConf();
       this.initEdit();
-  }
+    }
 }
+};
 </script>
 
 <style lang="scss" scoped></style>
