@@ -86,6 +86,11 @@ export default {
             this.socketResponse = res
             callback && callback(this.socketResponse)
           })
+        }else if (item.deviceType==='gun') {
+          cameraSocket(item).then(res => {
+            this.socketResponse = res
+            callback && callback(this.socketResponse)
+          })
         } else {
           let { algCriterion, algParam, algType} = item
           algTest({ algCriterion, algParam: JSON.stringify(algParam), algType: algType }).then(res => {
