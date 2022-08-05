@@ -247,7 +247,7 @@ export default {
       this.initPanConf();
       this.initEdit();
     }
-}
+  }
 };
 </script>
 
