@@ -94,6 +94,32 @@ export default {
           let { algCriterion, algParam, algType} = item
           algTest({ algCriterion, algParam: JSON.stringify(algParam), algType: algType }).then(res => {
             this.socketResponse = res.data
+           
+            const zoomArr = [];
+            let zoom = {
+                x: '',
+                y: ''
+              }
+            if (this.socketResponse.roi) {
+              this.socketResponse.roi = JSON.parse(this.socketResponse.roi)
+              for (let i = 0; i < this.socketResponse.roi.length; i++) {
+              
+                if (i % 2 === 0) {
+                  zoom.x = this.socketResponse.roi[i]
+                } else {
+                  zoom.y = this.socketResponse.roi[i]
+                  zoomArr.push(zoom)
+                  zoom = {
+                    x: '',
+                    y: ''
+                  }
+                }
+              }
+            }
+            this.socketResponse.roi = {
+              points: zoomArr,
+              "type": "rectangle"
+            };
             callback && callback(this.socketResponse)
             this.$message.success("调试完成!")
           })
