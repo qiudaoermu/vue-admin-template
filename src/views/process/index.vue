@@ -94,7 +94,7 @@ export default {
         } else {
           let { algCriterion, algParam, algType} = item
           algTest({ algCriterion, algParam: JSON.stringify(algParam), algType: algType }).then(res => {
-            this.socketResponse = data
+            this.socketResponse = res.data
             callback && callback(this.socketResponse)
             this.$message.success("调试完成!")
           })
