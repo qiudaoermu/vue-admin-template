@@ -77,7 +77,7 @@ export default {
       });
     },
    emitTransfromRecord(data, callback) {
-      
+
       const params = {
         type: 4,
         procId: +this.query.procId,
@@ -110,8 +110,25 @@ export default {
               let data = res.data
               callback && callback()
             })
+          }else if(item.breif === "Algo_detect_barcode") {
+            //条码
+              let {algCriterion, algParam, algType} = item
+              algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_barcode'}).then(res => {
+                let data = res.data
+              })
+          } else if (item.breif === "libAlgo_detect_luosi") {
+            let {algCriterion, algParam, algType} = item
+            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_luosi'}).then(res => {
+              let data = res.data
+            })
+          } else if (item.breif === "libAlgodetect_scratch") {
+            let {algCriterion, algParam, algType} = item
+            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgodetect_scratch'}).then(res => {
+              let data = res.data
+            })
           }
-        return false
+          return false
+        }
       }
     },
     emitPostGraphData(data) {
