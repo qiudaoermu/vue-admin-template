@@ -7,7 +7,6 @@
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
       @emitPostGraphData="emitPostGraphData"
-      @trigger="trigger"
       :socketResponse="socketResponse"
     />
   </div>
@@ -16,9 +15,9 @@
 <script>
 // import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
-import { getDeviceList,algTest } from "@/api/device";
+import { getDeviceList, algTest } from "@/api/device";
 import { getDict } from "@/api/dict";
-import { cameraSocket } from './cameraSocket'
+import { cameraSocket } from "./cameraSocket";
 import {
   getProcess,
   getServiceList,
@@ -35,11 +34,11 @@ export default {
       initPanConfFlag: false,
       record: {},
       query: {},
-      dict: {   //下拉框的字典
-        imgType: {},  //图片格式
-        triggerType: {} //触发方式
+      dict: { // 下拉框的字典
+        imgType: {}, // 图片格式
+        triggerType: {} // 触发方式
       },
-      socketResponse: {}  //单步调试返回值
+      socketResponse: {} // 单步调试返回值
     };
   },
   components: {
@@ -47,28 +46,24 @@ export default {
     // LF
   },
   created() {
-    this.getDict()
+    this.getDict();
   },
   mounted() {
-    this.query = this.$route.query
+    this.query = this.$route.query;
     this.main();
   },
   methods: {
-    //触发调试
-    trigger(form) {
-      console.log(form);
-    },
     getDict() {
-      getDict({param:'img_fmt'}).then(res => {
-        let data = res.data
-        this.dict.imgType = data
+      getDict({ param: "img_fmt" }).then(res => {
+        const data = res.data;
+        this.dict.imgType = data;
         window.sessionStorage.setItem("imgType", JSON.stringify(data));
-      })
-      getDict({param:'tri_way'}).then(res => {
-        let data = res.data
-        this.dict.triggerType = data
+      });
+      getDict({ param: "tri_way" }).then(res => {
+        const data = res.data;
+        this.dict.triggerType = data;
         window.sessionStorage.setItem("triggerType", JSON.stringify(data));
-      })
+      });
     },
     initEdit() {
       if (!this.query.procId) return;
@@ -78,53 +73,82 @@ export default {
     },
     emitTransfromRecord(data, callback) {
       if (data.isTest === true) {
-        let item = data
-        //是单步调试
-        if (item.deviceType==='camera') {
+        const item = data;
+        // 是单步调试
+        if (item.deviceType === "camera") {
           cameraSocket(item).then(res => {
-            this.socketResponse = res
-            callback && callback(this.socketResponse)
-          })
-        }else if (item.deviceType==='gun') {
+            this.socketResponse = res;
+            callback && callback(this.socketResponse);
+          });
+        } else if (item.deviceType === "gun") {
           cameraSocket(item).then(res => {
-            this.socketResponse = res
-            callback && callback(this.socketResponse)
-          })
+            this.socketResponse = res;
+            callback && callback(this.socketResponse);
+          });
         } else {
-          let { algCriterion, algParam, algType} = item
+          const { algCriterion, algParam, algType} = item;
           algTest({ algCriterion, algParam: JSON.stringify(algParam), algType: algType }).then(res => {
-            this.socketResponse = res.data
-           
-            const zoomArr = [];
-            let zoom = {
-                x: '',
-                y: ''
-              }
-            if (this.socketResponse.roi) {
-              this.socketResponse.roi = JSON.parse(this.socketResponse.roi)
-              for (let i = 0; i < this.socketResponse.roi.length; i++) {
-              
-                if (i % 2 === 0) {
-                  zoom.x = this.socketResponse.roi[i]
-                } else {
-                  zoom.y = this.socketResponse.roi[i]
-                  zoomArr.push(zoom)
-                  zoom = {
-                    x: '',
-                    y: ''
-                  }
-                }
-              }
+            this.socketResponse = res.data;
+            if (algType === "libAlgo_detect_scratch") {
+              this.socketResponse.roi = this.getScratchRoiArr();
+              console.log(this.socketResponse.roi);
+            } else {
+              this.socketResponse.roi = [
+                this.getRoiArr()
+              ];
             }
-            this.socketResponse.roi = {
-              points: zoomArr,
-              "type": "rectangle"
-            };
-            callback && callback(this.socketResponse)
-            this.$message.success("调试完成!")
-          })
+            callback && callback(this.socketResponse);
+            this.$message.success("调试完成!");
+          });
         }
-        return false
+        return false;
+      }
+    },
+    getScratchRoiArr() {
+      const zoomArr = [];
+      let points = [];
+      if (this.socketResponse.roi) {
+        this.socketResponse.roi = JSON.parse(this.socketResponse.roi);
+        for (let i = 0; i < this.socketResponse.roi.length; i++) {
+          if (i % 2 === 0) {
+            points = [];
+            points[0] = {};
+            points[0].x = this.socketResponse.roi[i];
+          } else {
+            points[0].y = this.socketResponse.roi[i];
+            zoomArr.push({
+              points: points,
+              "type": "point"
+            });
+          }
+        }
+        return zoomArr;
+      }
+    },
+    getRoiArr() {
+      const zoomArr = [];
+      let zoom = {
+        x: "",
+        y: ""
+      };
+      if (this.socketResponse.roi) {
+        this.socketResponse.roi = JSON.parse(this.socketResponse.roi);
+        for (let i = 0; i < this.socketResponse.roi.length; i++) {
+          if (i % 2 === 0) {
+            zoom.x = this.socketResponse.roi[i];
+          } else {
+            zoom.y = this.socketResponse.roi[i];
+            zoomArr.push(zoom);
+            zoom = {
+              x: "",
+              y: ""
+            };
+          }
+        }
+        return {
+          points: zoomArr,
+          "type": "rectangle"
+        };
       }
     },
     emitPostGraphData(data) {
