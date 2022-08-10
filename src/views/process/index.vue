@@ -27,6 +27,7 @@ import {
 } from "@/api/process";
 import { getAlgorithm } from "@/api/algorithm.js";
 import panelConfig from "./panelConfig";
+import {robotSocket} from "@/views/process/robotSocket";
 export default {
   data() {
     return {
@@ -82,6 +83,11 @@ export default {
           });
         } else if (item.deviceType === "gun") {
           cameraSocket(item).then(res => {
+            this.socketResponse = res;
+            callback && callback(this.socketResponse);
+          });
+        } else if (item.deviceType === "robot") {
+          robotSocket(item).then(res => {
             this.socketResponse = res;
             callback && callback(this.socketResponse);
           });
