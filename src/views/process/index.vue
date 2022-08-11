@@ -6,7 +6,7 @@
       :panelConfig="panelConfig"
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
-      @trigger="trigger"
+      @emitPostGraphData="emitPostGraphData"
       :socketResponse="socketResponse"
     />
   </div>
@@ -15,7 +15,7 @@
 <script>
 // import LF from "logicflow-vue/src/components/LF";
 // import VueBpmn from "@/components/VueBpmn";
-import { getDeviceList,algTest } from "@/api/device";
+import { getDeviceList, algTest } from "@/api/device";
 import { getDict } from "@/api/dict";
 import { cameraSocket,PLCSocket } from './cameraSocket'
 import {
@@ -27,6 +27,7 @@ import {
 } from "@/api/process";
 import { getAlgorithm } from "@/api/algorithm.js";
 import panelConfig from "./panelConfig";
+import {robotSocket} from "@/views/process/robotSocket";
 export default {
   data() {
     return {
@@ -34,11 +35,11 @@ export default {
       initPanConfFlag: false,
       record: {},
       query: {},
-      dict: {   //下拉框的字典
-        imgType: {},  //图片格式
-        triggerType: {} //触发方式
+      dict: { // 下拉框的字典
+        imgType: {}, // 图片格式
+        triggerType: {} // 触发方式
       },
-      socketResponse: {}  //单步调试返回值
+      socketResponse: {} // 单步调试返回值
     };
   },
   components: {
@@ -46,28 +47,24 @@ export default {
     // LF
   },
   created() {
-    this.getDict()
+    this.getDict();
   },
   mounted() {
-    this.query = this.$route.query
+    this.query = this.$route.query;
     this.main();
   },
   methods: {
-    //触发调试
-    trigger(form) {
-      console.log(form);
-    },
     getDict() {
-      getDict({param:'img_fmt'}).then(res => {
-        let data = res.data
-        this.dict.imgType = data
+      getDict({ param: "img_fmt" }).then(res => {
+        const data = res.data;
+        this.dict.imgType = data;
         window.sessionStorage.setItem("imgType", JSON.stringify(data));
-      })
-      getDict({param:'tri_way'}).then(res => {
-        let data = res.data
-        this.dict.triggerType = data
+      });
+      getDict({ param: "tri_way" }).then(res => {
+        const data = res.data;
+        this.dict.triggerType = data;
         window.sessionStorage.setItem("triggerType", JSON.stringify(data));
-      })
+      });
     },
     initEdit() {
       if (!this.query.procId) return;
@@ -76,7 +73,96 @@ export default {
       });
     },
     emitTransfromRecord(data, callback) {
-
+      if (data.isTest === true) {
+        const item = data;
+        // 是单步调试
+        if (item.deviceType === "camera") {
+          cameraSocket(item).then(res => {
+            this.socketResponse = res;
+            callback && callback(this.socketResponse);
+          });
+        } else if (item.deviceType==='plc') {
+          PLCSocket(item).then(res => {
+            this.socketResponse = res
+            callback && callback(this.socketResponse)
+          })
+        } else if (item.deviceType === "gun") {
+          cameraSocket(item).then(res => {
+            this.socketResponse = res;
+            callback && callback(this.socketResponse);
+          });
+        } else if (item.deviceType === "robot") {
+          robotSocket(item).then(res => {
+            this.socketResponse = res;
+            callback && callback(this.socketResponse);
+          });
+        } else {
+          const { algCriterion, algParam, algType} = item;
+          algTest({ algCriterion, algParam: JSON.stringify(algParam), algType: algType }).then(res => {
+            this.socketResponse = res.data;
+            if (algType === "libAlgo_detect_scratch") {
+              this.socketResponse.roi = this.getScratchRoiArr();
+              console.log(this.socketResponse.roi);
+            } else {
+              this.socketResponse.roi = [
+                this.getRoiArr()
+              ];
+            }
+            callback && callback(this.socketResponse);
+            this.$message.success("调试完成!");
+          });
+        }
+        return false;
+      }
+    },
+    getScratchRoiArr() {
+      const zoomArr = [];
+      let points = [];
+      if (this.socketResponse.roi) {
+        this.socketResponse.roi = JSON.parse(this.socketResponse.roi);
+        for (let i = 0; i < this.socketResponse.roi.length; i++) {
+          if (i % 2 === 0) {
+            points = [];
+            points[0] = {};
+            points[0].x = this.socketResponse.roi[i];
+          } else {
+            points[0].y = this.socketResponse.roi[i];
+            zoomArr.push({
+              points: points,
+              "type": "point"
+            });
+          }
+        }
+        return zoomArr;
+      }
+    },
+    getRoiArr() {
+      const zoomArr = [];
+      let zoom = {
+        x: "",
+        y: ""
+      };
+      if (this.socketResponse.roi) {
+        this.socketResponse.roi = JSON.parse(this.socketResponse.roi);
+        for (let i = 0; i < this.socketResponse.roi.length; i++) {
+          if (i % 2 === 0) {
+            zoom.x = this.socketResponse.roi[i];
+          } else {
+            zoom.y = this.socketResponse.roi[i];
+            zoomArr.push(zoom);
+            zoom = {
+              x: "",
+              y: ""
+            };
+          }
+        }
+        return {
+          points: zoomArr,
+          "type": "rectangle"
+        };
+      }
+    },
+    emitPostGraphData(data) {
       const params = {
         type: 4,
         procId: +this.query.procId,
@@ -85,59 +171,6 @@ export default {
         name: this.query.name,
         ...data
       };
-      console.log(data,"record")
-      if (data.isTest === true) {
-        let item = data
-        //是单步调试
-        if (item.deviceType==='camera') {
-          cameraSocket(item).then(res => {
-            this.socketResponse = res
-            callback && callback(this.socketResponse)
-          })
-        }else if (item.deviceType==='plc') {
-          PLCSocket(item).then(res => {
-            this.socketResponse = res
-            callback && callback(this.socketResponse)
-          })
-        }else if(item.breif === "libAlgo_detect_gap") {
-          //门缝
-          let {algCriterion, algParam, algType} = item
-          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
-            let data = res.data
-            this.socketResponse = data
-            callback && callback(this.socketResponse)
-          })
-        }else if(item.breif === "libAlgo_detect_barcode") {
-          //条码
-          let {algCriterion, algParam, algType} = item
-          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
-            let data = res.data
-            this.socketResponse = data
-            callback && callback(this.socketResponse)
-          })
-        }else if(item.breif === "libAlgo_detect_qbar") {
-          //二维码
-          let {algCriterion, algParam, algType} = item
-          algTest({algCriterion, algParam:JSON.stringify(algParam), algType: algType}).then(res => {
-            let data = res.data
-            this.socketResponse = data
-            callback && callback(this.socketResponse)
-          })
-        }else if (item.breif === "libAlgo_detect_luosi") {
-            let {algCriterion, algParam, algType} = item
-            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgo_detect_luosi'}).then(res => {
-              let data = res.data
-                callback && callback(res.data)
-            })
-        } else if (item.breif === "libAlgodetect_scratch") {
-            let {algCriterion, algParam, algType} = item
-            algTest({algCriterion, algParam:JSON.stringify(algParam), algType: 'libAlgodetect_scratch'}).then(res => {
-              let data = res.data
-                callback && callback(res.data)
-            })
-          }
-        return false
-      }
       // 修改
       if (this.query.procId) {
         modifyProcess(params).then(res => {
@@ -243,7 +276,7 @@ export default {
       this.initPanConf();
       this.initEdit();
     }
-}
+  }
 };
 </script>
 
