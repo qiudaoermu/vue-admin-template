@@ -1,12 +1,12 @@
 import Wsocket from "../../../package/socket.js";
-
 export function robotSocket(params) {
-    const ws = new Wsocket("socket/pushMessage/10086")
+    const userId = window.localStorage.getItem("userId");
+    const ws = new Wsocket(`socket/pushMessage/${userId}`);
     let res = {}
     try {
         let json = {
             flag: "device_single_step_debug",
-            userId: "10086",
+            userId,
             deviceInfo: {
                 id: params.deviceId,
                 type: params.deviceType,

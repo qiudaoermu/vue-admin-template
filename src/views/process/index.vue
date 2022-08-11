@@ -5,6 +5,7 @@
       v-if="initPanConfFlag"
       :panelConfig="panelConfig"
       :record="record"
+      @emitDeploy="emitDeploy"
       @emitTransfromRecord="emitTransfromRecord"
       @emitPostGraphData="emitPostGraphData"
       :socketResponse="socketResponse"
@@ -54,6 +55,15 @@ export default {
     this.main();
   },
   methods: {
+    emitDeploy() {
+      this.$router.push({
+        path: "/station/index",
+        query: {
+          sceneInfoId: this.$route.query.sceneInfoId,
+          procId: this.$route.query.procId,
+        }
+      });
+    },
     getDict() {
       getDict({ param: "img_fmt" }).then(res => {
         const data = res.data;
@@ -76,8 +86,8 @@ export default {
       if (data.isTest === true) {
         const item = data;
         // 是单步调试
+        item.type = item.deviceType;
         if (item.deviceType === "camera") {
-          item.type = item.deviceType;
           cameraSocket(item).then(res => {
             this.socketResponse = res;
             callback && callback(this.socketResponse);

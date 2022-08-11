@@ -1,12 +1,12 @@
 import Wsocket from "../../../package/socket.js";
-
 export function cameraSocket(params) {
-  const ws = new Wsocket("socket/pushMessage/10086")
-  let res = {}
+  const userId = window.localStorage.getItem("userId");
+  const ws = new Wsocket(`socket/pushMessage/${userId}`);
+  let res = {};
   try {
     let json = {
       flag: "device_single_step_debug",
-      userId: "10086",
+      userId: store.getters.userId,
       deviceInfo: {
         id: params.deviceId,
         type: params.deviceType,
@@ -36,20 +36,21 @@ export function cameraSocket(params) {
 }
 
 export function PLCSocket(params) {
-  const ws = new Wsocket("socket/pushMessage/10086")
+  const userId = window.localStorage.getItem("userId");
+  const ws = new Wsocket(`socket/pushMessage/${userId}`);
   let res = {}
   try {
     let json = {
       flag: "device_single_step_debug",
-      userId: "10086",
-      "deviceInfo":{
+      userId,
+      deviceInfo: {
         id: params.deviceId,
         type: params.deviceType,
         ...params,
       },
-    "commandType": params.commandType,
-    "commandAddress": params.commandAddress,
-    "commandValue": params.commandValue
+      commandType: params.commandType,
+      commandAddress: params.commandAddress,
+      commandValue: params.commandValue,
     };
     const sendParams = JSON.stringify({
       ...json,

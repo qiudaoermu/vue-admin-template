@@ -7,6 +7,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: "",
     avatar: "",
+    userId: "",
   };
 };
 
@@ -25,6 +26,10 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
   },
+  SET_USERID: (state, userId) => {
+    state.userId = userId;
+    window.localStorage.setItem("userId", userId);
+  }
 };
 
 const actions = {
@@ -36,6 +41,7 @@ const actions = {
         .then((response) => {
           const { data } = response;
           commit("SET_TOKEN", data.token);
+          commit("SET_USERID", data.id);
           setToken(data.token);
           resolve();
         })

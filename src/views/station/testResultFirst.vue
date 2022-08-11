@@ -344,9 +344,13 @@ export default {
       this.initSocketClient();
     }
   },
+  beforeDestroy() {
+    this.stopHandle();
+  },
   methods: {
     initSocketClient() {
-      this.ws = new Wsocket("socket/pushMessage/1");
+      const userId = window.localStorage.getItem("userId");
+      this.ws = new Wsocket(`socket/pushMessage/${userId}`);
     },
     productStatisticsApi(res) {
       this.summaryList.forEach(item => {
@@ -388,7 +392,7 @@ export default {
       ];
     },
     systemAlerm(res) {
-      console.log(res.sysAlarm);
+      this.logs = res.sysAlarm.split(",").map(item => ({ log: item }));
     },
     tableRowClassName({ row, rowIndex }) {
       // if (rowIndex % 2 === 0) {
