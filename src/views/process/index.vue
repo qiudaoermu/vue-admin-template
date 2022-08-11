@@ -6,7 +6,6 @@
       :panelConfig="panelConfig"
       :record="record"
       @emitTransfromRecord="emitTransfromRecord"
-      @emitPostGraphData="emitPostGraphData"
       @trigger="trigger"
       :socketResponse="socketResponse"
     />
@@ -18,7 +17,7 @@
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList,algTest } from "@/api/device";
 import { getDict } from "@/api/dict";
-import { cameraSocket } from './cameraSocket'
+import { cameraSocket,PLCSocket } from './cameraSocket'
 import {
   getProcess,
   getServiceList,
@@ -92,6 +91,11 @@ export default {
         //是单步调试
         if (item.deviceType==='camera') {
           cameraSocket(item).then(res => {
+            this.socketResponse = res
+            callback && callback(this.socketResponse)
+          })
+        }else if (item.deviceType==='plc') {
+          PLCSocket(item).then(res => {
             this.socketResponse = res
             callback && callback(this.socketResponse)
           })
