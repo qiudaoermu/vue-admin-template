@@ -40,25 +40,16 @@ export function PLCSocket(params) {
   let res = {}
   try {
     let json = {
-      "userId":"1",
-      "flag":"device_single_step_debug",
+      flag: "device_single_step_debug",
+      userId: "10086",
       "deviceInfo":{
-      "brand": "",
-      "company": "",
-      "createTime": "2022-07-08 14:27:14",
-      "drive": "1",
-      "id": 19,
-      "imgFormat": "",
-      "imgPath": "",
-      "ip": "192.168.1.152",
-      "name": "plc",
-      "port": 502,
-      "protocol": "tcp",
-      "type": "plc",
-      "updateTime": null
+        id: params.deviceId,
+        type: params.deviceType,
+        ...params,
       },
-    "commandType": "read",
-    "commandAddress": "100"
+    "commandType": params.commandType,
+    "commandAddress": params.commandAddress,
+    "commandValue": params.commandValue
     };
     const sendParams = JSON.stringify({
       ...json,
@@ -74,27 +65,4 @@ export function PLCSocket(params) {
   } catch (error) {
     console.log(error);
   }
-}
-
-
-function promiseAll(itemable){
-  if(!Array.isArray(itemable)) {
-    throw new Error('')
-  }
-  return new Promise((resolve,reject)=>{
-    let count = 0
-    let arr = []
-    for (let i = 0; i < itemable.length; i++) {
-      const element = itemable[i];
-      Promise.resolve(element.then(res=>{
-        count++
-        arr[i] = res
-        if (count===itemable.length) {
-          resolve(arr)
-        }
-      }),error=>{
-        reject()
-      })
-    }
-  })
 }
