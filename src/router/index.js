@@ -126,18 +126,18 @@ export const constantRoutes = [
   //     },
   //   ],
   // },
-  {
-    path: "/drag",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "drag",
-        component: () => import("@/views/drag/index"),
-        meta: { title: "展示配置", icon: "form" },
-      },
-    ],
-  },
+  // {
+  //   path: "/drag",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       name: "drag",
+  //       component: () => import("@/views/drag/index"),
+  //       meta: { title: "展示配置", icon: "form" },
+  //     },
+  //   ],
+  // },
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },

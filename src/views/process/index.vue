@@ -76,6 +76,7 @@ export default {
         const item = data;
         // 是单步调试
         if (item.deviceType === "camera") {
+          item.type = item.deviceType;
           cameraSocket(item).then(res => {
             this.socketResponse = res;
             callback && callback(this.socketResponse);
@@ -86,12 +87,11 @@ export default {
             callback && callback(this.socketResponse);
           });
         } else {
-          const { algCriterion, algParam, algType} = item;
-          algTest({ algCriterion, algParam: JSON.stringify(algParam), algType: algType }).then(res => {
+          const { algCriterion, algParam, algType, imgPath } = item;
+          algTest({ algCriterion, algParam: JSON.stringify(algParam), algType, imgPath }).then(res => {
             this.socketResponse = res.data;
             if (algType === "libAlgo_detect_scratch") {
               this.socketResponse.roi = this.getScratchRoiArr();
-              console.log(this.socketResponse.roi);
             } else {
               this.socketResponse.roi = [
                 this.getRoiArr()
@@ -213,7 +213,7 @@ export default {
 
       this.panelConfig.algorithm.list = this.panelConfig.algorithm.list.map(
         item => {
-          const { name, params, ...left } = item;
+          const { name, params, breif, ...left } = item;
           return {
             ...left,
             flowProperties: {
@@ -222,6 +222,7 @@ export default {
               text: name,
               label: name
             },
+            breif: breif,
             algParam: params,
             algName: name,
             algType: item.algId

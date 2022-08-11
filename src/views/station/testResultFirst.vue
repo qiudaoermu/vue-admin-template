@@ -1,11 +1,20 @@
 <template>
   <div class="section-container">
+    <!-- <div class="process">
+      <ul>
+        <li v-for="item in  processList">
+         
+          <el-button type="primary">
+             {{item.label}}
+          </el-button>
+        </li>
+      </ul>
+    </div> -->
     <h1 class="title">洗衣机下线外观缺陷检测</h1>
     <section class="data-show">
       <div class="data-show-left">
         <div class="data-show-left-top">
           <div class="data-show-left-top-left">
-            <header-title title="数据分析" class="title1" />
             <header-title title="产品合格率分析" />
             <v-chart class="chart-top chart" :option="optionCheck" />
             <header-title title="错误位置统计" />
@@ -26,6 +35,12 @@
           <div class="data-show-left-top-right">
             <div class="data-show-left-top-right-top">
               <div class="data-show-right-top-action">
+                <div class="data-show-right-top-result">
+                  <p>检测结果：</p>
+                  <h3 v-if="result === 1">合格</h3>
+                  <h3 v-else-if="result === 0" style="color:red">NG</h3>
+                  <h3 v-else style="color:blue">监测中</h3>
+                </div>
                 <el-form
                   :inline="true"
                   :model="numberValidateForm"
@@ -35,7 +50,7 @@
                   <el-form-item>
                     <el-button
                       icon="el-icon-switch-button"
-                      v-if="ws"
+                      v-if="wsConnect"
                       type="danger"
                       @click="stopHandle()"
                     >
@@ -54,13 +69,6 @@
                     <h2 style="color:green">{{ sn }}</h2>
                   </el-form-item>
                 </el-form>
-                <div class="data-show-right-top-result">
-                  <p>检测结果：</p>
-                  <div v-if="pos === 5">
-                    <h3 v-if="result">合格</h3>
-                    <h3 style="color:red" v-else>NG</h3>
-                  </div>
-                </div>
               </div>
               <div class="data-show-right-top-list">
                 <header-title title="检测项" />
@@ -69,19 +77,24 @@
                   :data="tableData"
                   :row-class-name="tableRowClassName"
                 >
-                  <el-table-column prop="name" label="检测项" width="80" />
+                  <el-table-column prop="detectType" label="检测项" />
                   <el-table-column
                     prop="detectInfo"
-                    label="检测标准"
-                    width="80"
+                    label="检测描述"
                   />
-                  <el-table-column prop="result" label="检测结果" width="120" />
-                  <el-table-column prop="detectInfo" label="结果">
+                  <el-table-column prop="result" label="检测结果" width="120">
+                    <template slot-scope="scope">
+                        <span>
+                          {{scope.row.result | filiterResult}}
+                        </span>
+                    </template>
+                  </el-table-column>
+                  <!-- <el-table-column prop="detectInfo" label="结果">
                     <template slot-scope="scope">
                       <img :src="right" v-if="scope.row.detectStatus === 1" />
                       <img :src="error" v-else-if="!scope.row.detectStatus" />
                     </template>
-                  </el-table-column>
+                  </el-table-column> -->
                 </el-table>
               </div>
             </div>
@@ -99,7 +112,7 @@
               </li>
             </ul>
           </div>
-          <div class="data-show-left-bottom-right">
+          <!-- <div class="data-show-left-bottom-right">
             <header-title
               :title="'设备状态' + '(' + connectionStatesText + ')'"
             />
@@ -135,11 +148,18 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
-    <section class="data-scroll" />
+    <!-- <section class="data-scroll" >
+      <el-button>
+        上一步
+      </el-button>
+      <el-button type="primary" class="next">
+        下一步
+      </el-button>
+    </section> -->
   </div>
 </template>
 
@@ -192,6 +212,22 @@ export default {
   },
   data() {
     return {
+      processList: [{
+        label: "第一步：硬件配置"
+      },
+      {
+        label: "第二步：流程配置"
+      },
+      {
+        label: "第三步：显示界面配置"
+      },
+      {
+        label: "第四步：模拟运行"
+      },
+      {
+        label: "第五步：部署"
+      }
+      ],
       connectionStatesText: "未连接",
       connectionStates: false,
       admin,
@@ -206,41 +242,7 @@ export default {
         5: "螺丝检测"
       },
       tableData: [
-        {
-          name: "二维码",
-          result: "",
-          key: 1,
-          detectInfo: "",
-          detectStatus: 2
-        },
-        {
-          name: "缝隙",
-          result: "",
-          key: 2,
-          detectInfo: "",
-          detectStatus: 2
-        },
-        {
-          name: "划伤划痕",
-          result: "",
-          key: 3,
-          detectInfo: "",
-          detectStatus: 2
-        },
-        {
-          name: "模版匹配",
-          result: "",
-          key: 4,
-          detectInfo: "",
-          detectStatus: 2
-        },
-        {
-          name: "螺丝检测",
-          result: "",
-          key: 5,
-          detectInfo: "",
-          detectStatus: 2
-        }
+       
       ],
       logs: [
         { log: "2022-06-13  15:30:30.537: CPU使用率达到87%！" },
@@ -257,134 +259,175 @@ export default {
         { title: "合格率", num: 0, key: "eligibleRate" }
       ],
       optionCheck: {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        legend: {},
+        grid: {
+          left: '1%',
+          right: '1%',
+          bottom: '0%',
+          containLabel: true
+        },
         xAxis: {
-          type: "category",
-          data: ["合格", "不合格"]
+          type: 'category',
+          data: []
         },
         yAxis: {
-          type: "value"
-        },
-        grid: {
-          left: "15%",
-          top: "5%",
-          right: "5%",
-          bottom: "20%"
         },
         series: [
           {
-            data: [
-              0,
-              {
-                value: 0,
-                itemStyle: {
-                  color: "#a90000"
-                }
-              }
-            ],
-            type: "bar"
+            name: '合格',
+            type: 'bar',
+            data: []
+          },
+          {
+            name: '不合格',
+            type: 'bar',
+            data: []
           }
         ]
       },
       optionError: {
+         tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        legend: {},
+        grid: {
+          left: '1%',
+          right: '1%',
+          bottom: '0%',
+          containLabel: true
+        },
         xAxis: {
-          type: "category",
-          data: ["合格", "不合格"]
+          type: 'category',
+          data: []
         },
         yAxis: {
-          type: "value"
-        },
-        grid: {
-          left: "15%",
-          top: "5%",
-          right: "5%",
-          bottom: "20%"
         },
         series: [
           {
-            data: [],
-            type: "bar"
+            name: '合格',
+            type: 'bar',
+            data: []
+          },
+          {
+            name: '不合格',
+            type: 'bar',
+            data: []
           }
         ]
       },
       ws: "",
-      result: "",
+      result: 0,
       sn: "",
-      pos: ""
+      pos: "",
+      wsConnect: false
     };
   },
   created() {
-    let socketConnet = window.localStorage.getItem("sockect-connet");
-    if (socketConnet) {
+    this.wsConnect = window.localStorage.getItem("sockect-connet");
+    if (this.wsConnect) {
+      this.initSocketClient();
       this.initSocket();
     }
   },
-  mounted() {},
+  mounted() {
+    this.wsConnect = window.localStorage.getItem("sockect-connet");
+    if (!this.wsConnect) {
+      this.initSocketClient();
+    }
+  },
   methods: {
+    initSocketClient() {
+      this.ws = new Wsocket("socket/pushMessage/1");
+    },
     productStatisticsApi(res) {
       this.summaryList.forEach(item => {
-        item.num = res[item.key];
+        item.num = res.productResult[item.key];
       });
-      this.optionCheck.series[0].data[0] = this.summaryList[1].num;
-      this.optionCheck.series[0].data[1].value = this.summaryList[2].num;
+      this.optionCheck.xAxis = {
+        type: "category",
+        data: res.productAnalyse.map(item => item.model)
+      };
+      this.optionCheck.series = [
+        {
+          name: "合格",
+          type: "bar",
+          data: res.productAnalyse.map(item => item.uneligibleNum)
+        },
+        {
+          name: "不合格",
+          type: "bar",
+          data: res.productAnalyse.map(item => item.eligibleNum)
+        }
+      ];
     },
-    errorPosStatisApi(error) {
-      error.forEach(item => {
-        item.key = this.detects[item.pos];
-      });
-      this.optionError.xAxis.data = error.map(item => item.key);
-      this.optionError.series[0].data = error.map(item => item.num);
+    errorPosStatisApi(res) {
+      this.optionError.xAxis = {
+        type: "category",
+        data: res.errorResult.map(item => item.detectType)
+      };
+      this.optionError.series = [
+        {
+          name: "合格",
+          type: "bar",
+          data: res.errorResult.map(item => item.uneligibleNum)
+        },
+        {
+          name: "不合格",
+          type: "bar",
+          data: res.errorResult.map(item => item.eligibleNum)
+        }
+      ];
+    },
+    systemAlerm(res) {
+      console.log(res.sysAlarm);
     },
     tableRowClassName({ row, rowIndex }) {
-      if (rowIndex % 2 === 0) {
-        return "table-row-default";
-      }
-      return "success-row";
+      // if (rowIndex % 2 === 0) {
+      //   return "table-row-default";
+      // }
+      // return "success-row";
     },
     startHandle() {
-      window.localStorage.setItem("sockect-connet", true);
       this.initSocket();
     },
     initSocket() {
-      this.ws = new Wsocket("socket/pushMessage/1");
       const sendParams = JSON.stringify({
+        flag: "start",
         sceneInfoId: this.$route.query.sceneInfoId
       });
       this.ws.onSendMessage(sendParams);
+      window.localStorage.setItem("sockect-connet", true);
+      this.wsConnect = window.localStorage.getItem("sockect-connet");
       this.ws.ws.addEventListener("message", event => {
         if (event.data === "连接成功") return;
         const res = event.data && JSON.parse(event.data);
-        if (res.cs === "close") {
-          this.connectionStates = false;
-        }
-        if (res.cs === "connect") {
-          this.connectionStates = true;
-        }
-        this.connectionStatesText =
-          this.connectionStates === true ? "已连接" : "未连接";
-        if (!res.result) return;
-        res.result.forEach(item => {
-          item.name = this.detects[item.pos];
-        });
-        const [firstDetect] = res.result;
         this.display =
-          "http://" +
-          process.env.VUE_APP_NGINX_IMG +
-          firstDetect.imgUrl.replace("/home", "");
-
-        this.result = res.result.every(item => item.detectStatus === 1);
-        this.tableData = res.result;
-        this.sn = firstDetect.sn;
-        this.productStatisticsApi(res.product);
-        this.errorPosStatisApi(res.error);
-        this.pos = res.pos;
+          "http://" + process.env.VUE_APP_NGINX_IMG + res.imgPath.replace("/data", "");
+        // 0 不合格 1合格 2监测中
+        this.result = res.result;
+        this.tableData = res.detectResult;
+        this.sn = res.model;
+        this.productStatisticsApi(res);
+        this.errorPosStatisApi(res);
+        this.systemAlerm(res)
         Log.prettyWarn("---Time---:", getTimesTamp());
         Log.prettyPrimary("--Websocket Receive Message: ", res);
         Log.prettyPrimary("Current display Image: ", this.display);
       });
     },
     stopHandle() {
+      this.ws.onSendMessage(JSON.stringify({ "flag": "stop", "stopType": "run" }));
       window.localStorage.removeItem("sockect-connet");
-      window.location.reload();
+      this.wsConnect = window.localStorage.getItem("sockect-connet");
     }
   }
 };
@@ -403,13 +446,30 @@ h6 {
   padding: 0;
 }
 .section-container {
+ 
   .title {
     font-size: 22px;
     font-weight: 500;
-    margin: 16px 0;
-    color: #ffffff;
+    margin: 0px 0px 9px 0px;
+    color: #0073E5;
     text-align: center;
+    background:#fff;
+    padding:22px 0;
     font-family: PingFangSC-Medium, PingFang SC;
+  }
+  .process {
+    background:#fff;
+    height: 69px;
+    line-height: 69px;
+    margin-bottom: 5px;
+    justify-content: center;
+    ul {
+      display: flex;
+      li {
+        flex: 1;
+        text-align:center;
+      }
+    }
   }
   .data-show {
     display: flex;
@@ -417,7 +477,7 @@ h6 {
       flex: 2;
       .chart {
         width: 100%;
-        height: 120px;
+        height: 200px;
       }
       .chart-top {
         margin-bottom: 30px;
@@ -429,6 +489,8 @@ h6 {
       .data-show-left-top {
         display: flex;
         .data-show-left-top-left {
+           box-shadow: 0px 12px 12px 0px rgba(184,190,208,0.0900);
+          border-radius: 8px;
           margin-right: 8px;
           width: calc(25% - 8px);
           padding: 8px;
@@ -440,11 +502,13 @@ h6 {
         }
         .data-show-left-top-middle {
           width: 40%;
+         
           // margin:0 8px;
-          border-right: 1px solid #ddd;
           display: flex;
           flex-flow: column;
           .data-show-left-top-middle-summary {
+             box-shadow: 0px 12px 12px 0px rgba(184,190,208,0.0900);
+          border-radius: 8px;
             display: flex;
             background: rgba(255, 255, 255, 0.93);
             justify-content: center;
@@ -483,6 +547,8 @@ h6 {
             }
           }
           .data-show-left-top-image {
+             box-shadow: 0px 12px 12px 0px rgba(184,190,208,0.0900);
+          border-radius: 14px;
             width: 100%;
             padding: 8px;
             height: 211px;
@@ -498,18 +564,19 @@ h6 {
           margin-left: 8px;
           width: 35%;
           padding: 8px;
+           box-shadow: 0px 12px 12px 0px rgba(184,190,208,0.0900);
+          border-radius: 8px;
           background: rgba(255, 255, 255, 0.93);
           .demo-ruleForm {
-            border-bottom: 1px solid #ddd;
             // padding: 8px 0;
           }
           .data-show-right-top-result {
             display: flex;
             align-items: center;
-            width: 60%;
             margin: 20px auto;
             padding-bottom: 20px;
-            justify-content: center;
+            font-weight: bold;
+            justify-content: flex-start;
             p {
               font-size: 16px;
             }
@@ -519,7 +586,6 @@ h6 {
               color: #14dd9f;
               font-weight: 500;
             }
-            border-bottom: 1px solid #ddd;
             margin-bottom: 10px;
           }
         }
@@ -528,17 +594,20 @@ h6 {
         margin-top: 8px;
         display: flex;
         .data-show-left-bottom-left {
-          width: calc(65%);
+          width: calc(100%);
           padding: 8px;
+          box-shadow: 0px 12px 12px 0px rgba(184,190,208,0.0900);
+          border-radius: 8px;
           background: rgba(255, 255, 255, 0.93);
-          margin-right: 8px;
-          border-right: 1px solid #ddd;
           .data-show-left-bottom-left-blog {
             li {
               display: flex;
               font-weight: 400;
               color: #666666;
               align-items: center;
+              font-size: 11px;
+              height: 43px;
+              line-height: 43px;
               padding: 4px;
               img {
                 width: 18px;
@@ -546,7 +615,7 @@ h6 {
                 margin-right: 5px;
               }
               &:nth-of-type(odd) {
-                background: #dce9fb;
+                background: rgba(208, 225, 255, 0.3)
               }
             }
           }
@@ -555,6 +624,8 @@ h6 {
           padding: 8px;
           // margin-left: 8px;
           background: rgba(255, 255, 255, 0.93);
+          box-shadow: 0px 12px 12px 0px rgba(184,190,208,0.0900);
+          border-radius: 8px;
           width: 35%;
           .receiver-user {
             margin: 0 auto;
@@ -630,6 +701,14 @@ h6 {
           }
         }
       }
+    }
+  }
+  .data-scroll {
+    display: flex;
+    justify-content: center;
+    margin: 29px 0;
+    .next {
+      margin-left: 48px;
     }
   }
 }

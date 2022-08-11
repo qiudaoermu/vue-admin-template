@@ -26,10 +26,12 @@ export default {
   .headerTitle {
     width: 100%;
     box-sizing: border-box;
-    color: #333333;
-    font-size: 16px;
+    height: 12px;
+    font-weight: bold;
+    color: #363636;
+    font-size: 12px;
     padding-left: 12px;
-    border-left: 5px solid #004BAA;
+    border-left: 3px solid #0073E5;
     box-sizing: border-box;
   }
 }

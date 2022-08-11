@@ -12,7 +12,7 @@
         >
       </el-tabs>
      </div> -->
-          <test-result-first />
+    <test-result-first />
 
   </div>
 </template>
@@ -80,7 +80,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .main {
-  background: #2d6ec2;
+  background: #F5F5F5;
   padding: 8px;
   height: 100%;
   width: 100%;
@@ -88,6 +88,7 @@ export default {
     width: 40%;
 
   }
+ 
 }
  ::v-deep .el-tabs--card>.el-tabs__header .el-tabs__item {
   background:#fff !important;
