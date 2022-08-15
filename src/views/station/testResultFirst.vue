@@ -512,7 +512,7 @@ h6 {
           flex-flow: column;
           .data-show-left-top-middle-summary {
              box-shadow: 0px 12px 12px 0px rgba(184,190,208,0.0900);
-          border-radius: 8px;
+            border-radius: 8px;
             display: flex;
             background: rgba(255, 255, 255, 0.93);
             justify-content: center;

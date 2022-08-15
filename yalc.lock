@@ -2,7 +2,8 @@
   "version": "v1",
   "packages": {
     "logicflow-vue": {
-      "signature": "50a1a9379e767d9b3e114999e75a48e0"
+      "signature": "5759885fd93a6bae11f4c27e951f7f4f",
+      "file": true
     }
   }
 }
