@@ -6,13 +6,13 @@
       width="460px"
       custom-class="deviceContainer"
     >
-      <el-form :model="form" :rules="rules" ref="ruleForm">
+      <el-form ref="ruleForm" :model="form" :rules="rules">
         <el-form-item
           label="设备名称:"
           :label-width="formLabelWidth"
           prop="name"
         >
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
         <el-form-item
           label="设备类型:"
@@ -24,11 +24,11 @@
             placeholder="请选择设备类型"
             style="width: 100%"
           >
-            <el-option label="相机" value="1"></el-option>
-            <el-option label="PLC" value="2"></el-option>
-            <el-option label="机器人" value="3"></el-option>
-            <el-option label="扫码枪" value="4"></el-option>
-            <el-option label="光源" value="5"></el-option>
+            <el-option label="相机" value="1" />
+            <el-option label="PLC" value="2" />
+            <el-option label="机器人" value="3" />
+            <el-option label="扫码枪" value="4" />
+            <el-option label="光源" value="5" />
           </el-select>
         </el-form-item>
         <el-form-item
@@ -36,10 +36,10 @@
           :label-width="formLabelWidth"
           prop="protocol"
         >
-          <el-input v-model="form.protocol" autocomplete="off"></el-input>
+          <el-input v-model="form.protocol" autocomplete="off" />
         </el-form-item>
         <el-form-item label="IP端口:" :label-width="formLabelWidth" prop="port">
-          <el-input v-model="form.port" autocomplete="off"></el-input>
+          <el-input v-model="form.port" autocomplete="off" />
         </el-form-item>
         <el-form-item label="驱动:" :label-width="formLabelWidth">
           <el-select
@@ -47,7 +47,7 @@
             placeholder="请选择驱动"
             style="width: 100%"
           >
-            <el-option label="Basler modal3" value="1"></el-option>
+            <el-option label="Basler modal3" value="1" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -56,15 +56,15 @@
         <el-button type="primary" @click="addDevice">确 定</el-button>
       </div>
     </el-dialog>
-    <div class="dashboard-box" v-for="item in box">
+    <div v-for="(item, index) in box" class="dashboard-box">
       <div :class="'boxImg' + item.type">
-        <img :src="'/bg/device' + item.type + '.png'" class="img" />
+        <img :src="'/bg/device' + (index + 1) + '.png'" class="img">
       </div>
       <div>{{ item.name }}</div>
     </div>
     <div class="dashboard-box" @click="dialogFormVisible = true">
       <div class="dashboard-icon">
-        <div><i class="el-icon-document-add"></i></div>
+        <div><i class="el-icon-document-add" /></div>
         <div><span style="font-size: 14px">新增内容</span></div>
       </div>
     </div>
@@ -77,21 +77,21 @@ import { getDeviceList, addDevice } from "@/api/device";
 export default {
   name: "Dashboard",
   computed: {
-    ...mapGetters(["name"]),
+    ...mapGetters(["name"])
   },
   data() {
     return {
       rules: {
         name: [
-          { required: true, message: "请选择设备名称", trigger: "change" },
+          { required: true, message: "请选择设备名称", trigger: "change" }
         ],
         type: [
-          { required: true, message: "请选择设备类型", trigger: "change" },
+          { required: true, message: "请选择设备类型", trigger: "change" }
         ],
         protocol: [
-          { required: true, message: "请选择通讯协议", trigger: "change" },
+          { required: true, message: "请选择通讯协议", trigger: "change" }
         ],
-        port: [{ required: true, message: "请选择IP端口", trigger: "change" }],
+        port: [{ required: true, message: "请选择IP端口", trigger: "change" }]
       },
       formLabelWidth: "90px",
       box: [],
@@ -100,14 +100,18 @@ export default {
         drive: "",
         port: "",
         protocol: "",
-        type: "",
+        type: ""
       },
-      dialogFormVisible: false,
+      dialogFormVisible: false
     };
+  },
+
+  created() {
+    this.getList();
   },
   methods: {
     addDevice() {
-      this.$refs['ruleForm'].validate((valid) => {
+      this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
           addDevice(this.form).then((res) => {
             this.dialogFormVisible = false;
@@ -122,12 +126,8 @@ export default {
       getDeviceList().then((res) => {
         this.box = res.data;
       });
-    },
-  },
-
-  created() {
-    this.getList();
-  },
+    }
+  }
 };
 </script>
 
