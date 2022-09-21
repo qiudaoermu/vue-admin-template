@@ -6,13 +6,9 @@ import "@/styles/index.scss"; // global css
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
-import components from "logicflow-vue/packages/index";
 // 加载view-generator项目组件
 // import * as dragsComponets from "@drag/install.js";
-// import "logicflow-vue/lib/logicFlow.css";
-for (const i in components) {
-  Vue.use(components[i]);
-}
+
 // dragsComponets.aioComponents.component.forEach((item) => {
 //   Vue.component(item.name, item);
 // });

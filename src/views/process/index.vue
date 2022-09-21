@@ -3,12 +3,12 @@
     <!-- <vue-bpmn /> -->
     <LF
       v-if="initPanConfFlag"
-      :panelConfig="panelConfig"
+      :panel-config="panelConfig"
       :record="record"
+      :socket-response="socketResponse"
       @emitDeploy="emitDeploy"
       @emitTransfromRecord="emitTransfromRecord"
       @emitPostGraphData="emitPostGraphData"
-      :socketResponse="socketResponse"
     />
   </div>
 </template>
@@ -18,7 +18,7 @@
 // import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList, algTest } from "@/api/device";
 import { getDict } from "@/api/dict";
-import { cameraSocket,PLCSocket } from './cameraSocket'
+import { cameraSocket, PLCSocket } from "./cameraSocket";
 import {
   getProcess,
   getServiceList,
@@ -28,8 +28,12 @@ import {
 } from "@/api/process";
 import { getAlgorithm } from "@/api/algorithm.js";
 import panelConfig from "./panelConfig";
-import {robotSocket} from "@/views/process/robotSocket";
+import { robotSocket } from "@/views/process/robotSocket";
 export default {
+  components: {
+    // VueBpmn,
+    // LF
+  },
   data() {
     return {
       panelConfig,
@@ -42,10 +46,6 @@ export default {
       },
       socketResponse: {} // 单步调试返回值
     };
-  },
-  components: {
-    // VueBpmn,
-    // LF
   },
   created() {
     this.getDict();
@@ -60,7 +60,7 @@ export default {
         path: "/station/index",
         query: {
           sceneInfoId: this.$route.query.sceneInfoId,
-          procId: this.$route.query.procId,
+          procId: this.$route.query.procId
         }
       });
     },
@@ -92,11 +92,11 @@ export default {
             this.socketResponse = res;
             callback && callback(this.socketResponse);
           });
-        } else if (item.deviceType==='plc') {
+        } else if (item.deviceType === "plc") {
           PLCSocket(item).then(res => {
-            this.socketResponse = res
-            callback && callback(this.socketResponse)
-          })
+            this.socketResponse = res;
+            callback && callback(this.socketResponse);
+          });
         } else if (item.deviceType === "gun") {
           cameraSocket(item).then(res => {
             this.socketResponse = res;
