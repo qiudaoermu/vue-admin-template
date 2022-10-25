@@ -1,7 +1,7 @@
 <template>
   <section class="app-main">
     <!-- <keep-alive> -->
-      <router-view :key="key" />
+    <router-view :key="key" />
     <!-- </keep-alive> -->
   </section>
 </template>
@@ -12,8 +12,8 @@ export default {
   computed: {
     key() {
       return this.$route.path;
-    },
-  },
+    }
+  }
 };
 </script>
 

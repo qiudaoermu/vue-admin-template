@@ -16,5 +16,7 @@ tests/**/coverage/
 *.sln
 *.zip
 html
+htmlx
+htmlk
 .yalc
 yalc.lock

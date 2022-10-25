@@ -69,12 +69,12 @@
     }
 
     // menu hover
-    .submenu-title-noDropdown,
-    .el-submenu__title {
-      &:hover {
-        background-color: $menuHover !important;
-      }
-    }
+    // .submenu-title-noDropdown,
+    // .el-submenu__title {
+    //   &:hover {
+    //     background-color: $menuHover !important;
+    //   }
+    // }
 
     .is-active>.el-submenu__title {
       color: $subMenuActiveText !important;
@@ -184,7 +184,23 @@
     }
   }
 }
-
+.el-menu-item {
+  font-size: 16px !important;
+}
+.el-menu .el-menu-item.is-active {
+      border-radius: 25px 0 0 25px;
+      margin-left: 20px;
+      text-indent: -20px;
+}
+.hideSidebar .el-menu .el-menu-item.is-active {
+  margin-left: 0px;
+}
+.hideSidebar .el-menu-item.is-active.submenu-title-noDropdown .el-tooltip .svg-icon{
+  margin-left: 40px !important;
+}
+.el-menu-item, .el-submenu__title {
+  padding-left: 40px !important;
+}
 // when menu collapsed
 .el-menu--vertical {
   &>.el-menu {

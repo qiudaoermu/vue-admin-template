@@ -34,36 +34,34 @@ export const constantRoutes = [
   {
     path: "/login",
     component: () => import("@/views/login/index"),
-    hidden: true,
+    hidden: true
   },
 
   {
     path: "/404",
     component: () => import("@/views/404"),
-    hidden: true,
+    hidden: true
   },
 
   {
     path: "/",
     component: Layout,
     redirect: "/alg",
-    name: "alg",
-    meta: { title: "alg", icon: "el-icon-s-help" },
     children: [
       {
         path: "alg",
         name: "alg",
         component: () => import("@/views/alg/index"),
-        meta: { title: "算法场景", icon: "table" },
+        meta: { title: "算法场景", icon: "table" }
       },
       {
         path: "info",
         name: "info",
         component: () => import("@/views/alg/info"),
         meta: { title: "算法场景详情", icon: "table" },
-        hidden: true,
-      },
-    ],
+        hidden: true
+      }
+    ]
   },
   {
     path: "/process",
@@ -72,9 +70,9 @@ export const constantRoutes = [
       {
         path: "link",
         component: () => import("@/views/process/index"),
-        meta: { title: "流程配置", icon: "link" },
-      },
-    ],
+        meta: { title: "流程配置", icon: "link" }
+      }
+    ]
   },
   {
     component: Layout,
@@ -84,9 +82,9 @@ export const constantRoutes = [
         path: "suplies",
         name: "Suplies",
         component: () => import("@/views/suplies/index"),
-        meta: { title: "设备管理", icon: "dashboard" },
-      },
-    ],
+        meta: { title: "设备管理", icon: "dashboard" }
+      }
+    ]
   },
   {
     path: "/station",
@@ -96,9 +94,9 @@ export const constantRoutes = [
         path: "index",
         name: "Station",
         component: () => import("@/views/station/index"),
-        meta: { title: "运行状态", icon: "form" },
-      },
-    ],
+        meta: { title: "运行状态", icon: "form" }
+      }
+    ]
   },
   // {
   //   path: "/station",
@@ -140,14 +138,14 @@ export const constantRoutes = [
   // },
 
   // 404 page must be placed at the end !!!
-  { path: "*", redirect: "/404", hidden: true },
+  { path: "*", redirect: "/404", hidden: true }
 ];
 
 const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes,
+    routes: constantRoutes
   });
 
 const router = createRouter();

@@ -8,6 +8,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar">
+          <div class="user-name">张三</div>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -16,7 +17,7 @@
               Home
             </el-dropdown-item>
           </router-link>
-        
+
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
@@ -27,35 +28,35 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
-import avatar  from '@/assets/avatar.png'
+import { mapGetters } from "vuex";
+import Breadcrumb from "@/components/Breadcrumb";
+import Hamburger from "@/components/Hamburger";
+import avatar from "@/assets/avatar.png";
 export default {
-  data() {
-    return {
-      avatar
-    }
-  },
   components: {
     Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      avatar
+    };
+  },
   computed: {
     ...mapGetters([
-      'sidebar',
+      "sidebar"
     ])
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar')
+      this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      await this.$store.dispatch("user/logout");
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -114,21 +115,23 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        cursor: pointer;
         position: relative;
-
+        display: flex;
+        align-items: center;
         .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
+          width: 36px;
+          height: 36px;
           border-radius: 10px;
         }
-
+        .user-name{
+          color: #404040;
+          font-size: 16px;
+          font-weight: 400;
+          margin-left: 10px;
+          margin-right: 10px;
+        }
         .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
           font-size: 12px;
         }
       }
