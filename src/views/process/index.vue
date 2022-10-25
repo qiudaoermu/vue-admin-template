@@ -5,6 +5,7 @@
       v-if="initPanConfFlag"
       :panel-config="panelConfig"
       :record="record"
+      version="X"
       :socket-response="socketResponse"
       @emitDeploy="emitDeploy"
       @emitTransfromRecord="emitTransfromRecord"

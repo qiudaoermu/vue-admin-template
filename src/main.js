@@ -6,6 +6,18 @@ import "@/styles/index.scss"; // global css
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
+import DrawBoard from "canvas-drawboard/packages";
+import "canvas-drawboard/lib/drawboard.css";
+
+import components from "logicflow-vue/packages";
+import "logicflow-vue/lib/logicFlow.css";
+for (const i in components) {
+  Vue.use(components[i]);
+}
+// set ElementUI lang to EN
+// 如果想要中文版 element-ui，按如下方式声明
+Vue.use(ElementUI);
+Vue.use(DrawBoard);
 // 加载view-generator项目组件
 // import * as dragsComponets from "@drag/install.js";
 
@@ -44,7 +56,7 @@ if (process.env.NODE_ENV === "production") {
 
 // set ElementUI lang to EN
 // 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI)
+Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 
@@ -52,5 +64,5 @@ new Vue({
   el: "#app",
   router,
   store,
-  render: (h) => h(App),
+  render: (h) => h(App)
 });
