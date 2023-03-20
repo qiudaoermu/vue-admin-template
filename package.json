@@ -48,6 +48,7 @@
     "eslint": "6.7.2",
     "eslint-plugin-vue": "6.2.2",
     "html-webpack-plugin": "3.2.0",
+    "husky": "^8.0.3",
     "mockjs": "1.0.1-beta3",
     "runjs": "4.3.2",
     "sass": "1.26.8",
@@ -58,6 +59,19 @@
     "svgo": "1.2.2",
     "vue-template-compiler": "2.6.10"
   },
+   "husky": {
+      "hooks": {
+        "pre-commit": "lint-staged"
+      }
+    },
+    "lint-staged": {
+      "*.{js,jsx}": [
+        "eslint './src/**/*.{js,jsx}' --fix"
+      ],
+      "package.json": [
+        "sort-package-json"
+      ]
+    },
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
