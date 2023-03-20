@@ -7,7 +7,7 @@ import { getToken } from "@/utils/auth";
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
+  timeout: 5000 // request timeout
 });
 
 // request interceptor
@@ -49,9 +49,9 @@ service.interceptors.response.use(
       Message({
         message: res.message || "Error",
         type: "error",
-        duration: 5 * 1000,
+        duration: 5 * 1000
       });
-     
+
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 401 || res.code === 50012 || res.code === 50014) {
         // to re-login
@@ -61,11 +61,11 @@ service.interceptors.response.use(
           {
             confirmButtonText: "Re-Login",
             cancelButtonText: "Cancel",
-            type: "warning",
+            type: "warning"
           }
         ).then(() => {
           store.dispatch("user/resetToken").then(() => {
-            location.reload();
+            window.location.reload();
           });
         });
       }
@@ -78,17 +78,17 @@ service.interceptors.response.use(
     Message({
       message: error.message,
       type: "error",
-      duration: 5 * 1000,
+      duration: 5 * 1000
     });
     if (error.response) {
       switch (error.response.status) {
         case 401:
           // 返回 401 清除 token 信息并跳转到登录页面
-        store.dispatch("user/resetToken").then(() => {
-          location.reload();
-        });
+          store.dispatch("user/resetToken").then(() => {
+            window.location.reload();
+          });
       }
-     }
+    }
     return Promise.reject(error);
   }
 );

@@ -7,17 +7,17 @@
 <script>
 // import drag from "@drag/views/index/Home.vue"
 export default {
-  name: 'index',
-  data(){
-    return {}
-  },
+  name: "Index",
   components: {
     // drag
   },
-  created(){},
-  mounted(){},
+  data() {
+    return {};
+  },
+  created() {},
+  mounted() {},
   methods: {}
-}
+};
 </script>
 <style lang='less' scoped>
 </style>

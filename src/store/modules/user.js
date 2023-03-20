@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from "@/api/user";
+import { login, getInfo } from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 import { resetRouter } from "@/router";
 
@@ -7,7 +7,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: "",
     avatar: "",
-    userId: "",
+    userId: ""
   };
 };
 
@@ -100,12 +100,12 @@ const actions = {
       commit("RESET_STATE");
       resolve();
     });
-  },
+  }
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions,
+  actions
 };

@@ -4,7 +4,7 @@ export function getProcess(params) {
     url: "/process/getProcess",
     method: "get",
     params
-   
+
   });
 }
 
@@ -13,7 +13,7 @@ export function getSceneList(params) {
     url: "/process/getSceneList",
     method: "post",
     params
-  })
+  });
 }
 // 查询服务
 export function getServiceList(params) {
@@ -21,7 +21,7 @@ export function getServiceList(params) {
     url: "/process/getServiceList",
     method: "post",
     params
-  })
+  });
 }
 // 保存流程;
 export function saveProcess(params) {
@@ -29,22 +29,22 @@ export function saveProcess(params) {
     url: "/process/saveProcess",
     method: "post",
     data: {
-      ...params,
-    },
+      ...params
+    }
   });
 }
 export function getProcessList(params) {
   return request({
     url: "/process/getProcessList",
     method: "post",
-    params,
+    params
   });
 }
 export function getSceneInfoList(params) {
   return request({
     url: "/process/getSceneInfoList",
     method: "get",
-    params,
+    params
   });
 }
 
@@ -53,9 +53,9 @@ export function saveSceneInfo(params) {
     url: "/process/saveSceneInfo",
     method: "post",
     data: {
-      ...params,
+      ...params
     }
-  })
+  });
 }
 
 export function getSceneProcess(params) {
@@ -63,7 +63,7 @@ export function getSceneProcess(params) {
     url: "/process/getSceneProcess",
     method: "get",
     params
-  })
+  });
 }
 
 export function modifyProcess(params) {
@@ -71,8 +71,8 @@ export function modifyProcess(params) {
     url: "/process/modifyProcess",
     method: "post",
     data: {
-      ...params,
-    },
+      ...params
+    }
   });
 }
 

@@ -1,20 +1,20 @@
 <template>
   <div class="pageTitlecomment">
-    <div class="headerTitle">{{title}}</div>
+    <div class="headerTitle">{{ title }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'headerTitle',
-  data() {
-    return {};
-  },
+  name: "HeaderTitle",
   props: {
     title: {
       type: String,
-      default: ''
+      default: ""
     }
+  },
+  data() {
+    return {};
   }
 };
 </script>

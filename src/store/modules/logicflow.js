@@ -1,16 +1,16 @@
 
 const state = {
-  lf: "",
+  lf: ""
 };
 
 const mutations = {
   transformLf: (state, lf) => {
-    state.lf = lf
+    state.lf = lf;
   }
 };
 
 export default {
   namespaced: true,
   state,
-  mutations,
+  mutations
 };

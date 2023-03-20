@@ -54,8 +54,7 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-        >Login</el-button
-      >
+      >Login</el-button>
 
       <!-- <div class="tips">
         <span style="margin-right: 20px">userName: admin</span>
@@ -66,18 +65,10 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
 
 export default {
   name: "Login",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
-      } else {
-        callback();
-      }
-    };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 3) {
         callback(new Error("The passwd can not be less than 3 digits"));
@@ -88,26 +79,26 @@ export default {
     return {
       loginForm: {
         userName: "张三",
-        passwd: "123456",
+        passwd: "123456"
       },
       loginRules: {
         userName: [{ required: true, trigger: "blur" }],
         passwd: [
-          { required: true, trigger: "blur", validator: validatePassword },
-        ],
+          { required: true, trigger: "blur", validator: validatePassword }
+        ]
       },
       loading: false,
       passwdType: "passwd",
-      redirect: undefined,
+      redirect: undefined
     };
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler: function(route) {
         this.redirect = route.query && route.query.redirect;
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   methods: {
     showPwd() {
@@ -138,8 +129,8 @@ export default {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

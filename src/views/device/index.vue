@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-box" v-for="item in box">
-      <img :src="item.img" class="boxImg" />
+    <div v-for="item in box" :key="item" class="dashboard-box">
+      <img :src="item.img" class="boxImg">
       <span>sadas</span>
     </div>
   </div>
@@ -13,7 +13,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "Dashboard",
   computed: {
-    ...mapGetters(["name"]),
+    ...mapGetters(["name"])
   },
   data() {
     return {
@@ -22,17 +22,16 @@ export default {
         { img: "123.png" },
         { img: "123.png" },
         { img: "123.png" },
-        { img: "123.png" },
-      ],
+        { img: "123.png" }
+      ]
     };
   },
-  methods:{
-    getList(){
-      getDeviceList().then();
-    }
-  },
-  created(){
+  created() {
     this.getList();
+  },
+  methods: {
+    getList() {
+    }
   }
 
 };

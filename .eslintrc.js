@@ -4,6 +4,17 @@ module.exports = {
     parser: "babel-eslint",
     sourceType: "module",
   },
+  globals: {
+    "window": true,
+    "Promise": true,
+    "console": true,
+    "process": true,
+    "WebSocket": true,
+    "require": true,
+    "document": true,
+    "module": true,
+    "FileReader":true
+  },
   env: {
     browser: false,
     node: false,

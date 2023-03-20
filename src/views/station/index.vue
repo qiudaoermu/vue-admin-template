@@ -22,11 +22,11 @@ import testResultFirst from "./testResultFirst";
 export default {
   name: "Index",
   components: {
-    testResultFirst,
+    testResultFirst
   },
   data() {
     return {
-      activeName: "first",
+      activeName: "first"
     };
   },
   created() {},
@@ -38,11 +38,11 @@ export default {
     websocket(teamId, studentId) {
       this.ws = new WebSocket(
         `ws://${process.env.VUE_APP_SOCKET_URL}/socket/pushMessage/1`
-      )
-      this._onSendMessage()
-      this._onGetMessage()
-      this._onCatchErr()
-      this._onClose()
+      );
+      this._onSendMessage();
+      this._onGetMessage();
+      this._onCatchErr();
+      this._onClose();
     },
     _onSendMessage() {
       this.ws.sendMessage = (params) => {
@@ -50,14 +50,14 @@ export default {
           this.ws.send(params);
         } else {
           this.ws.addEventListener("open", (e) => {
-            console.log(this.ws.readyState)
-            this.ws.send(params)
-          })
+            console.log(this.ws.readyState);
+            this.ws.send(params);
+          });
         }
-      }
+      };
     },
     _onCatchErr() {
-      this.ws.addEventListener("error", function (event) {
+      this.ws.addEventListener("error", function(event) {
         console.log("Error from server ", event.data);
       });
     },
@@ -71,8 +71,7 @@ export default {
     },
     _onGetMessage() {
       this.ws.addEventListener("message", (event) => {
-        const result = event.data && JSON.parse(event.data);
-      })
+      });
     }
   }
 };
@@ -88,7 +87,7 @@ export default {
     width: 40%;
 
   }
- 
+
 }
  ::v-deep .el-tabs--card>.el-tabs__header .el-tabs__item {
   background:#fff !important;

@@ -56,7 +56,7 @@
         <el-button type="primary" @click="addDevice">确 定</el-button>
       </div>
     </el-dialog>
-    <div v-for="(item, index) in box" class="dashboard-box">
+    <div v-for="(item, index) in box" :key="index" class="dashboard-box">
       <div :class="'boxImg' + item.type">
         <img :src="'/bg/device' + (index + 1) + '.png'" class="img">
       </div>

@@ -6,11 +6,11 @@
         key="collapse"
         class="sidebar-logo-link"
       >
-        <img v-if="logoFold" :src="logoFold" class="sidebar-logo fold" />
+        <img v-if="logoFold" :src="logoFold" class="sidebar-logo fold">
         <h1 v-else class="sidebar-title">{{ title }}</h1>
       </div>
       <div v-else key="expand" class="sidebar-logo-link">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <img v-if="logo" :src="logo" class="sidebar-logo">
       </div>
     </transition>
   </div>

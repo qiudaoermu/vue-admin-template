@@ -36,23 +36,23 @@ export default {
         "readonly": false,
         "disabled": false
       }
-    }
+    };
   },
   render(h) {
-    const config = this.json.__config__
-    const listeners = this.json
-    let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
-    if (config.showLabel === false) labelWidth = '0'
+    const config = this.json.__config__;
+    const listeners = this.json;
+    let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null;
+    if (config.showLabel === false) labelWidth = "0";
     return (
       <el-col span={config.span}>
         <el-form-item label-width={labelWidth} prop={this.json.__vModel__}
-          label={config.showLabel ? config.label : ''}>
+          label={config.showLabel ? config.label : ""}>
           <render conf={this.json} {...{ on: listeners }} />
         </el-form-item>
       </el-col>
-    )
-  },
-}
+    );
+  }
+};
 </script>
 
 <style>

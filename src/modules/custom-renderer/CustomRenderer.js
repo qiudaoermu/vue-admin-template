@@ -7,8 +7,8 @@ export default class CustomRenderer extends BpmnRenderer {
     super(config, eventBus, styles, pathMap, canvas, textRenderer, 2000);
 
     this.handlers["user:MySql"] = function(parentGfx, element) {
-      const url = "https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/rules.png",
-        attr = { x: 0, y: 0, width: 48, height: 48 };
+      const url = "https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/rules.png";
+      const attr = { x: 0, y: 0, width: 48, height: 48 };
       const customIcon = svgCreate("image", {
         // 在这里创建了一个image
         ...attr,

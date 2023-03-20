@@ -3,7 +3,7 @@
     <!-- <div class="process">
       <ul>
         <li v-for="item in  processList">
-         
+
           <el-button type="primary">
              {{item.label}}
           </el-button>
@@ -29,7 +29,7 @@
             </div>
             <div class="data-show-left-top-image">
               <header-title title="当前检测位置" />
-              <img :src="display" />
+              <img :src="display">
             </div>
           </div>
           <div class="data-show-left-top-right">
@@ -42,24 +42,24 @@
                   <h3 v-else style="color:blue">监测中</h3>
                 </div>
                 <el-form
+                  ref="numberValidateForm"
                   :inline="true"
                   :model="numberValidateForm"
-                  ref="numberValidateForm"
                   class="demo-ruleForm"
                 >
                   <el-form-item>
                     <el-button
-                      icon="el-icon-switch-button"
                       v-if="wsConnect"
+                      icon="el-icon-switch-button"
                       type="danger"
                       @click="stopHandle()"
                     >
                       停止
                     </el-button>
                     <el-button
+                      v-else
                       type="primary"
                       icon="el-icon-caret-right"
-                      v-else
                       @click="startHandle()"
                     >
                       开始
@@ -84,9 +84,9 @@
                   />
                   <el-table-column prop="result" label="检测结果" width="120">
                     <template slot-scope="scope">
-                        <span>
-                          {{scope.row.result | filiterResult}}
-                        </span>
+                      <span>
+                        {{ scope.row.result | filiterResult }}
+                      </span>
                     </template>
                   </el-table-column>
                   <!-- <el-table-column prop="detectInfo" label="结果">
@@ -104,8 +104,8 @@
           <div class="data-show-left-bottom-left">
             <header-title title="报警信息" />
             <ul class="data-show-left-bottom-left-blog">
-              <li v-for="item in logs">
-                <img :src="admin" />
+              <li v-for="item in logs" :key="item">
+                <img :src="admin">
                 <p>
                   {{ item.log }}
                 </p>
@@ -196,11 +196,6 @@ export default {
   components: {
     VChart
   },
-  watch: {
-    connectionStates(record) {
-      this.connectionStatesText = record === true ? "已连接" : "未连接";
-    }
-  },
   filters: {
     filiterResult(res) {
       if (res === 1) {
@@ -242,7 +237,7 @@ export default {
         5: "螺丝检测"
       },
       tableData: [
-       
+
       ],
       logs: [
         { log: "2022-06-13  15:30:30.537: CPU使用率达到87%！" },
@@ -260,66 +255,66 @@ export default {
       ],
       optionCheck: {
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           axisPointer: {
-            type: 'shadow'
+            type: "shadow"
           }
         },
         legend: {},
         grid: {
-          left: '1%',
-          right: '1%',
-          bottom: '0%',
+          left: "1%",
+          right: "1%",
+          bottom: "0%",
           containLabel: true
         },
         xAxis: {
-          type: 'category',
+          type: "category",
           data: []
         },
         yAxis: {
         },
         series: [
           {
-            name: '合格',
-            type: 'bar',
+            name: "合格",
+            type: "bar",
             data: []
           },
           {
-            name: '不合格',
-            type: 'bar',
+            name: "不合格",
+            type: "bar",
             data: []
           }
         ]
       },
       optionError: {
-         tooltip: {
-          trigger: 'axis',
+        tooltip: {
+          trigger: "axis",
           axisPointer: {
-            type: 'shadow'
+            type: "shadow"
           }
         },
         legend: {},
         grid: {
-          left: '1%',
-          right: '1%',
-          bottom: '0%',
+          left: "1%",
+          right: "1%",
+          bottom: "0%",
           containLabel: true
         },
         xAxis: {
-          type: 'category',
+          type: "category",
           data: []
         },
         yAxis: {
         },
         series: [
           {
-            name: '合格',
-            type: 'bar',
+            name: "合格",
+            type: "bar",
             data: []
           },
           {
-            name: '不合格',
-            type: 'bar',
+            name: "不合格",
+            type: "bar",
             data: []
           }
         ]
@@ -330,6 +325,11 @@ export default {
       pos: "",
       wsConnect: false
     };
+  },
+  watch: {
+    connectionStates(record) {
+      this.connectionStatesText = record === true ? "已连接" : "未连接";
+    }
   },
   created() {
     this.wsConnect = window.localStorage.getItem("sockect-connet");
@@ -422,7 +422,7 @@ export default {
         this.sn = res.model;
         this.productStatisticsApi(res);
         this.errorPosStatisApi(res);
-        this.systemAlerm(res)
+        this.systemAlerm(res);
         Log.prettyWarn("---Time---:", getTimesTamp());
         Log.prettyPrimary("--Websocket Receive Message: ", res);
         Log.prettyPrimary("Current display Image: ", this.display);
@@ -450,7 +450,7 @@ h6 {
   padding: 0;
 }
 .section-container {
- 
+
   .title {
     font-size: 22px;
     font-weight: 500;
@@ -506,7 +506,7 @@ h6 {
         }
         .data-show-left-top-middle {
           width: 40%;
-         
+
           // margin:0 8px;
           display: flex;
           flex-flow: column;

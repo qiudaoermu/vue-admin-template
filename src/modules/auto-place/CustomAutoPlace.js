@@ -4,8 +4,8 @@ export default function CustomAutoPlace(eventBus, modeling) {
   AutoPlace.call(this, eventBus, modeling, 3000);
 
   eventBus.on("autoPlace", 3000, function(context) {
-    const shape = context.shape,
-      source = context.source;
+    const shape = context.shape;
+    const source = context.source;
 
     return getNewCustomShapePosition(source, shape);
   });
@@ -65,8 +65,8 @@ export function getNewCustomShapePosition(source, element, hints) {
 
   var distance = hints.defaultDistance || 50;
 
-  var sourceMid = getMid(source),
-    sourceTrbl = asTRBL(source);
+  var sourceMid = getMid(source);
+  var sourceTrbl = asTRBL(source);
 
   // simply put element right next to source
   return {

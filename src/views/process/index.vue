@@ -16,13 +16,11 @@
 
 <script>
 // import LF from "logicflow-vue/src/components/LF";
-// import VueBpmn from "@/components/VueBpmn";
 import { getDeviceList, algTest } from "@/api/device";
 import { getDict } from "@/api/dict";
 import { cameraSocket, PLCSocket } from "./cameraSocket";
 import {
   getProcess,
-  getServiceList,
   getSceneList,
   saveProcess,
   modifyProcess
@@ -254,7 +252,7 @@ export default {
 
       this.panelConfig.service.list = this.panelConfig.service.list.map(
         item => {
-          const { id, ...params } = item;
+          const { params } = item;
           return {
             ...params,
             flowProperties: {
@@ -276,7 +274,6 @@ export default {
       //   // this.panelConfig.device.list = res.data
       // })
       const deviceList = await getDeviceList();
-      const serviceList = await getServiceList();
       const scenesList = await getSceneList();
       const algorithmList = await getAlgorithm();
       this.panelConfig.device.list = deviceList.data;
